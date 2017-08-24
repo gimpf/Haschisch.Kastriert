@@ -1,94 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DA72DF88-90C5-405D-825F-68B8EDB04833}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.2.0</Version>
+    <Description>A library of non-cryptographic hash algorithms for .NET</Description>
+    <ApplicationIcon />
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Haschisch</RootNamespace>
-    <AssemblyName>Haschisch</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.4.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Hasher.cs" />
-    <Compile Include="Hashers\HalfSip24Hasher.cs" />
-    <Compile Include="Hashers\HalfSip13Hasher.cs" />
-    <Compile Include="Hashers\HalfSip24Steps.cs" />
-    <Compile Include="Hashers\HalfSip13Steps.cs" />
-    <Compile Include="Hashers\Marvin32Steps.cs" />
-    <Compile Include="Hashers\Marvin32Hasher.cs" />
-    <Compile Include="Hashers\Murmur3x8632Steps.cs" />
-    <Compile Include="Hashers\SeaHasher.cs" />
-    <Compile Include="Hashers\Murmur3x8632Hasher.cs" />
-    <Compile Include="Hashers\SeaHashSteps.cs" />
-    <Compile Include="Hashers\XxHash32Hasher.cs" />
-    <Compile Include="Hashers\XXHash32Steps.cs" />
-    <Compile Include="Hashers\XxHash64Hasher.cs" />
-    <Compile Include="Hashers\XXHash64Steps.cs" />
-    <Compile Include="Util\BufferUtil.cs" />
-    <Compile Include="Util\BitOps.cs" />
-    <Compile Include="HashableEqualityComparer.cs" />
-    <Compile Include="IHashable.cs" />
-    <Compile Include="IHasher.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\PackedList.cs" />
-    <Compile Include="Util\Require.cs" />
-    <Compile Include="Util\Seeder.cs" />
-    <Compile Include="Util\UnsafeByteOps.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

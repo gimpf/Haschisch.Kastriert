@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Haschisch.Benchmarks": {
+      "commandName": "Project",
+      "commandLineArgs": "-j:core_x64 --quick-and-dirty -c:algo_block"
+    }
+  }
+}
