@@ -8,7 +8,7 @@ namespace Haschisch.Benchmarks
     {
         private ICombine combiner;
 
-        [Params(4, 8, 16)]
+        [Params(4, 8, 16, 32)]
         public int Bytes { get; set; }
 
         // going through combiner creates some overhead, but it's constant and the same
@@ -29,6 +29,9 @@ namespace Haschisch.Benchmarks
                     break;
                 case 16:
                     this.combiner = new Combiner4();
+                    break;
+                case 32:
+                    this.combiner = new Combiner8();
                     break;
                 default:
                     throw new InvalidOperationException("unsupported combine count");
@@ -120,7 +123,21 @@ namespace Haschisch.Benchmarks
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4);
+        }
 
+        private sealed class Combiner8 : ICombine
+        {
+            public int Empty() => 0;
+
+            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4, 5, 6, 7, 8);
+            public int CustomFromIssue() => HashCode.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int CustomMurmur() => Murmur3Combiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+
+            public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Marvin32() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
         }
 
         private interface ICombine
