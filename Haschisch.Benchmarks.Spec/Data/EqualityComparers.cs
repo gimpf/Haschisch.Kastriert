@@ -30,14 +30,14 @@ namespace Haschisch.Benchmarks
 
         public int GetHashCode(Large obj)
         {
-            var vec = new PackedVec<int, int, int, int, int>(
+            var vec = new PackedList<int, int, int, int, int>(
                 obj.M.S.Arg1,
                 obj.M.S.Arg2,
                 obj.M.S.Arg3,
                 obj.M.Text?.GetHashCode() ?? 0,
                 obj.List?.LongLength.GetHashCode() ?? 0);
             return default(T).Hash(
-                ref Unsafe.As<PackedVec<int, int, int, int, int>, byte>(ref vec),
+                ref Unsafe.As<PackedList<int, int, int, int, int>, byte>(ref vec),
                 (int)BufferUtil.BufferSize(ref vec));
         }
     }

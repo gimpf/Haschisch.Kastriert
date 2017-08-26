@@ -17,12 +17,12 @@ namespace Haschisch.Benchmarks
 
         public static int Combine<T1, T2>(T1 value1, T2 value2)
         {
-            var h = new PackedVec<int, int>(
+            var h = new PackedList<int, int>(
                 value1?.GetHashCode() ?? 0,
                 value2?.GetHashCode() ?? 0);
 
             return default(THasher).Hash(
-                ref Unsafe.As<PackedVec<int, int>, byte>(ref h),
+                ref Unsafe.As<PackedList<int, int>, byte>(ref h),
                 2 * sizeof(int));
         }
 
