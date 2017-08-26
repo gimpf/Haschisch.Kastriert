@@ -47,10 +47,18 @@ namespace Haschisch.Benchmarks
             return FinalizeValue(value1?.GetHashCode() ?? 0, sizeof(int));
         }
 
-        // baseline
         public static int Combine<T1, T2>(T1 value1, T2 value2)
         {
             var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
+            return FinalizeValue(combinedValue, sizeof(int) * 2);
+        }
+
+        public static int Combine_Reordered<T1, T2>(T1 value1, T2 value2)
+        {
+            var v1 = value1?.GetHashCode() ?? 0;
+            var v2 = value2?.GetHashCode() ?? 0;
+
+            var combinedValue = CombineValue(v2, v1);
             return FinalizeValue(combinedValue, sizeof(int) * 2);
         }
 
@@ -59,6 +67,19 @@ namespace Haschisch.Benchmarks
             var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
             combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
             combinedValue = CombineValue(value4?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 4);
+        }
+
+        public static int Combine_Reordered<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
+        {
+            var v1 = value1?.GetHashCode() ?? 0;
+            var v2 = value2?.GetHashCode() ?? 0;
+            var v3 = value3?.GetHashCode() ?? 0;
+            var v4 = value4?.GetHashCode() ?? 0;
+
+            var combinedValue = CombineValue(v2, v1);
+            combinedValue = CombineValue(v3, combinedValue);
+            combinedValue = CombineValue(v4, combinedValue);
             return FinalizeValue(combinedValue, sizeof(int) * 4);
         }
 
@@ -81,6 +102,28 @@ namespace Haschisch.Benchmarks
             combinedValue = CombineValue(value6?.GetHashCode() ?? 0, combinedValue);
             combinedValue = CombineValue(value7?.GetHashCode() ?? 0, combinedValue);
             combinedValue = CombineValue(value8?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 8);
+        }
+
+        public static int Combine_Reordered<T1, T2, T3, T4, T5, T6, T7, T8>(
+            T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
+        {
+            var v1 = value1?.GetHashCode() ?? 0;
+            var v2 = value2?.GetHashCode() ?? 0;
+            var v3 = value3?.GetHashCode() ?? 0;
+            var v4 = value4?.GetHashCode() ?? 0;
+            var v5 = value5?.GetHashCode() ?? 0;
+            var v6 = value6?.GetHashCode() ?? 0;
+            var v7 = value7?.GetHashCode() ?? 0;
+            var v8 = value8?.GetHashCode() ?? 0;
+
+            var combinedValue = CombineValue(v2, v1);
+            combinedValue = CombineValue(v3, combinedValue);
+            combinedValue = CombineValue(v4, combinedValue);
+            combinedValue = CombineValue(v5, combinedValue);
+            combinedValue = CombineValue(v6, combinedValue);
+            combinedValue = CombineValue(v7, combinedValue);
+            combinedValue = CombineValue(v8, combinedValue);
             return FinalizeValue(combinedValue, sizeof(int) * 8);
         }
         #endregion Static Methods

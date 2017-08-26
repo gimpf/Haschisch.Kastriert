@@ -49,43 +49,43 @@ namespace Haschisch.Benchmarks
         public int Empty() => this.combiner.Empty();
 
         [Benchmark]
-        public int SimpleMultiplyAdd() =>
-            this.combiner.CustomSimpleMultiplyAdd();
+        public int SimpleMultiplyAdd() => this.combiner.CustomSimpleMultiplyAdd();
 
         [Benchmark]
-        public int CustomMurmur3FromIssue() =>
-            this.combiner.CustomFromIssue();
+        public int SimpleMultiplyAdd_Reordered() => this.combiner.CustomSimpleMultiplyAdd_Reordered();
 
         [Benchmark]
-        public int HSip13() =>
-            this.combiner.HSip13();
+        public int CustomMurmur3FromIssue() => this.combiner.CustomFromIssue();
 
         [Benchmark]
-        public int Marvin32() =>
-            this.combiner.Marvin32();
+        public int CustomMurmur3FromIssue_Reordered() => this.combiner.CustomFromIssue_Reordered();
 
         [Benchmark]
-        public int Murmur3A() =>
-            this.combiner.Murmur3A();
+        public int CustomMurmur3A() => this.combiner.CustomMurmur();
 
         [Benchmark]
-        public int XXHash32() =>
-            this.combiner.XXHash32();
+        public int HSip13() => this.combiner.HSip13();
 
         [Benchmark]
-        public int XXHash64() =>
-            this.combiner.XXHash64();
+        public int Marvin32() => this.combiner.Marvin32();
 
         [Benchmark]
-        public int CustomMurmur3A() =>
-            this.combiner.CustomMurmur();
+        public int Murmur3A() => this.combiner.Murmur3A();
+
+        [Benchmark]
+        public int XXHash32() => this.combiner.XXHash32();
+
+        [Benchmark]
+        public int XXHash64() => this.combiner.XXHash64();
 
         private sealed class Combiner1 : ICombine
         {
             public int Empty() => 0;
 
             public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1);
+            public int CustomSimpleMultiplyAdd_Reordered() => SimpleMixCombiner.CombineSimple_Reordered(1);
             public int CustomFromIssue() => HashCode.Combine(1);
+            public int CustomFromIssue_Reordered() => HashCode.Combine(1); // no difference in implementation
             public int CustomMurmur() => Murmur3Combiner.Combine(1);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1);
@@ -100,7 +100,9 @@ namespace Haschisch.Benchmarks
             public int Empty() => 0;
 
             public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2);
+            public int CustomSimpleMultiplyAdd_Reordered() => SimpleMixCombiner.CombineSimple_Reordered(1, 2);
             public int CustomFromIssue() => HashCode.Combine(1, 2);
+            public int CustomFromIssue_Reordered() => HashCode.Combine_Reordered(1, 2);
             public int CustomMurmur() => Murmur3Combiner.Combine(1, 2);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2);
@@ -115,7 +117,9 @@ namespace Haschisch.Benchmarks
             public int Empty() => 0;
 
             public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4);
+            public int CustomSimpleMultiplyAdd_Reordered() => SimpleMixCombiner.CombineSimple_Reordered(1, 2, 3, 4);
             public int CustomFromIssue() => HashCode.Combine(1, 2, 3, 4);
+            public int CustomFromIssue_Reordered() => HashCode.Combine_Reordered(1, 2, 3, 4);
             public int CustomMurmur() => Murmur3Combiner.Combine(1, 2, 3, 4);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4);
@@ -130,7 +134,9 @@ namespace Haschisch.Benchmarks
             public int Empty() => 0;
 
             public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4, 5, 6, 7, 8);
+            public int CustomSimpleMultiplyAdd_Reordered() => SimpleMixCombiner.CombineSimple_Reordered(1, 2, 3, 4, 5, 6, 7, 8);
             public int CustomFromIssue() => HashCode.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int CustomFromIssue_Reordered() => HashCode.Combine_Reordered(1, 2, 3, 4, 5, 6, 7, 8);
             public int CustomMurmur() => Murmur3Combiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
@@ -145,7 +151,9 @@ namespace Haschisch.Benchmarks
             int Empty();
 
             int CustomSimpleMultiplyAdd();
+            int CustomSimpleMultiplyAdd_Reordered();
             int CustomFromIssue();
+            int CustomFromIssue_Reordered();
             int CustomMurmur();
 
             int HSip13();
