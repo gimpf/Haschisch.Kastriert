@@ -1,18 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using BenchmarkDotNet.Attributes;
 using Haschisch.Hashers;
 using Haschisch.Tests;
 
 namespace Haschisch.Benchmarks
 {
-    // Compares different hash-functions for suitability for use as a key in .NETs
-    // HashSet/Dictionary default implementations.
-    //
-    // BEWARE!!!
-    // 
-    // as it stands now, likely misleading
-    // (although, as all algos perform almost the same, might be just doing fine)
-    public class AccessHashSet
+    public class HashSet_Complex
     {
         private Large[] data;
 
@@ -117,6 +111,7 @@ namespace Haschisch.Benchmarks
             return RunHashSetBenchmark(set);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark(HashSet<Large> set)
         {
             var misCnt = 0UL;

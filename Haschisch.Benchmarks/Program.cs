@@ -69,17 +69,17 @@ Example:
                 });
             }
 
-            if (args.Contains("--quick-and-dirty"))
+            if (args.Contains("--quick"))
             {
                 jobs = jobs
-                    .Select(j => j.WithMinIterationTime(10 * TimeInterval.Millisecond).WithMaxRelativeError(0.2))
+                    .Select(j => j.WithMinIterationTime(75 * TimeInterval.Millisecond).WithMaxRelativeError(0.075).WithId(j.Id))
                     .ToList();
             }
 
-            if (args.Contains("-f"))
+            if (args.Contains("--quick-and-dirty"))
             {
                 jobs = jobs
-                    .Select(j => j.WithMinIterationTime(75 * TimeInterval.Millisecond).WithMaxRelativeError(0.075))
+                    .Select(j => j.WithMinIterationTime(10 * TimeInterval.Millisecond).WithMaxRelativeError(0.2).WithId(j.Id))
                     .ToList();
             }
 
@@ -108,7 +108,11 @@ Example:
             // Suite 3: Compare hash algorithm performance when used for .NET HashSet accesses
             //
             // A highly misleading benchmark as of now.
-            if (args.Contains("-c:algo_hashset")) { summary = BenchmarkRunner.Run<AccessHashSet>(cfg); }
+            if (args.Contains("-c:algo_hashset")) { summary = BenchmarkRunner.Run<HashSet_Complex>(cfg); }
+            if (args.Contains("-c:algo_hashset_fill")) { summary = BenchmarkRunner.Run<HashSet_Fill>(cfg); }
+            if (args.Contains("-c:algo_hashset_copy")) { summary = BenchmarkRunner.Run<HashSet_CopyCtor>(cfg); }
+            if (args.Contains("-c:algo_hashset_remove")) { summary = BenchmarkRunner.Run<HashSet_Remove>(cfg); }
+            if (args.Contains("-c:algo_hashset_lookup")) { summary = BenchmarkRunner.Run<HashSet_Lookup>(cfg); }
 
             // Suite 4, Part V: Comparing implementations for the same hash algorithm.
             if (args.Contains("-c:hsip13")) { summary = BenchmarkRunner.Run<HashByteArray_CompareHSip13>(cfg); }
