@@ -4,12 +4,12 @@ using Haschisch.Hashers;
 
 namespace Haschisch.Benchmarks
 {
-    public partial class CombineHashCodes
+    public class CombineHashCodes
     {
         private ICombine combiner;
 
-        [Params(1, 2, 4)]
-        public int CombineCount { get; set; }
+        [Params(4, 8, 16)]
+        public int Bytes { get; set; }
 
         // going through combiner creates some overhead, but it's constant and the same
         // for all algorithms, so we can ignore it w.r.t. relative performance
@@ -19,15 +19,15 @@ namespace Haschisch.Benchmarks
         [GlobalSetup]
         public void InitializeCombiner()
         {
-            switch (this.CombineCount)
+            switch (this.Bytes)
             {
-                case 1:
+                case 4:
                     this.combiner = new Combiner1();
                     break;
-                case 2:
+                case 8:
                     this.combiner = new Combiner2();
                     break;
-                case 4:
+                case 16:
                     this.combiner = new Combiner4();
                     break;
                 default:
@@ -43,6 +43,9 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark(Baseline = true)]
+        public int Empty() => this.combiner.Empty();
+
+        [Benchmark]
         public int SimpleMultiplyAdd() =>
             this.combiner.CustomSimpleMultiplyAdd();
 
@@ -76,39 +79,41 @@ namespace Haschisch.Benchmarks
 
         private sealed class Combiner1 : ICombine
         {
-            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4);
+            public int Empty() => 0;
 
+            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1);
             public int CustomFromIssue() => HashCode.Combine(1);
+            public int CustomMurmur() => Murmur3Combiner.Combine(1);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1);
             public int Marvin32() => GenericCombiner<Marvin32Hasher.Block>.Combine(1);
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1);
-
-            public int CustomMurmur() => Murmur3Combiner.Combine(1);
         }
 
         private sealed class Combiner2 : ICombine
         {
-            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4);
+            public int Empty() => 0;
 
+            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2);
             public int CustomFromIssue() => HashCode.Combine(1, 2);
+            public int CustomMurmur() => Murmur3Combiner.Combine(1, 2);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2);
             public int Marvin32() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2);
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2);
-
-            public int CustomMurmur() => Murmur3Combiner.Combine(1, 2);
         }
 
         private sealed class Combiner4 : ICombine
         {
-            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4);
+            public int Empty() => 0;
 
+            public int CustomSimpleMultiplyAdd() => SimpleMixCombiner.CombineSimple(1, 2, 3, 4);
             public int CustomFromIssue() => HashCode.Combine(1, 2, 3, 4);
+            public int CustomMurmur() => Murmur3Combiner.Combine(1, 2, 3, 4);
 
             public int HSip13() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4);
             public int Marvin32() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4);
@@ -116,22 +121,21 @@ namespace Haschisch.Benchmarks
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4);
 
-            public int CustomMurmur() => Murmur3Combiner.Combine(1, 2, 3, 4);
         }
 
         private interface ICombine
         {
-            int CustomSimpleMultiplyAdd();
+            int Empty();
 
+            int CustomSimpleMultiplyAdd();
             int CustomFromIssue();
+            int CustomMurmur();
 
             int HSip13();
             int Marvin32();
             int Murmur3A();
             int XXHash32();
             int XXHash64();
-
-            int CustomMurmur();
         }
     }
 }
