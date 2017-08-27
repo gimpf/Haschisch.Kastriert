@@ -5,7 +5,7 @@ namespace Haschisch.Benchmarks
 {
     // Like Murmur3A_TG, plus
     // - extend with seed
-    public static class Murmur3A_TG_Alt1_Combiner
+    public static class Murmur3A_TG_WithSeed_Combiner
     {
         private static readonly int Seed = GetNewSeed();
 

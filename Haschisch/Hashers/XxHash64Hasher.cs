@@ -220,5 +220,77 @@ namespace Haschisch.Hashers
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             int IStreamingHasher<int>.Finish() => (int)this.Finish();
         }
+
+        public struct Combiner : IHashCodeCombiner
+        {
+            public int Combine<T1>(T1 value1)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalInt(state, (uint)x1);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            public int Combine<T1, T2>(T1 value1, T2 value2)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, 2 * sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x1 | (ulong)x2 << 32);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, 4 * sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x1 | (ulong)x2 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x3 | (ulong)x4 << 32);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            public int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, 5 * sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x1 | (ulong)x2 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x3 | (ulong)x4 << 32);
+                state = XXHash64Steps.Short.MixFinalInt(state, (uint)x5);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                var x6 = value6?.GetHashCode() ?? 0;
+                var x7 = value7?.GetHashCode() ?? 0;
+                var x8 = value8?.GetHashCode() ?? 0;
+                XXHash64Steps.Long.Initialize(DefaultSeed, out var v1, out var v2, out var v3, out var v4);
+                XXHash64Steps.Long.MixStep(
+                    ref v1,
+                    ref v2,
+                    ref v3,
+                    ref v4,
+                    (uint)x1 | (ulong)x2 << 32,
+                    (uint)x3 | (ulong)x4 << 32,
+                    (uint)x5 | (ulong)x6 << 32,
+                    (uint)x7 | (ulong)x8 << 32);
+                var s = XXHash64Steps.Long.GetSmallState(ref v1, ref v2, ref v3, ref v4);
+                XXHash64Steps.Short.Initialize(s, 8 * sizeof(int), out var state);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+        }
     }
 }

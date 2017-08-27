@@ -58,25 +58,46 @@ namespace Haschisch.Benchmarks
         public int Murmur3A_Tannergooding_Custom() => this.combiner.Murmur3A_Tannergooding_Custom();
 
         [Benchmark]
-        public int Murmur3A_TannergoodingAlt_Custom() => this.combiner.Murmur3A_TannergoodingAlt_Custom();
+        public int Murmur3A_TannergoodingWithSeed_Custom() => this.combiner.Murmur3A_TannergoodingWithSeed_Custom();
 
         [Benchmark]
         public int Murmur3A_Steps_Custom() => this.combiner.Murmur3A_Steps_Custom();
 
         [Benchmark]
+        public int Murmur3A_Combine_Generic() => this.combiner.Murmur3A_Combine_Generic();
+
+        [Benchmark]
         public int Murmur3A_Block_Generic() => this.combiner.Murmur3A_Block_Generic();
+
+        [Benchmark]
+        public int HSip13_Combine_Generic() => this.combiner.HSip13_Combine_Generic();
 
         [Benchmark]
         public int HSip13_Block_Generic() => this.combiner.HSip13_Block_Generic();
 
         [Benchmark]
+        public int HSip24_Combine_Generic() => this.combiner.HSip24_Combine_Generic();
+
+        [Benchmark]
+        public int Marvin32_Combine_Generic() => this.combiner.Marvin32_Combine_Generic();
+
+        [Benchmark]
         public int Marvin32_Block_Generic() => this.combiner.Marvin32_Block_Generic();
+
+        [Benchmark]
+        public int XXHash32_Combine_Generic() => this.combiner.XXHash32_Combine_Generic();
 
         [Benchmark]
         public int XXHash32_Block_Generic() => this.combiner.XXHash32_Block_Generic();
 
         [Benchmark]
+        public int XXHash64_Combine_Generic() => this.combiner.XXHash64_Combine_Generic();
+
+        [Benchmark]
         public int XXHash64_Block_Generic() => this.combiner.XXHash64_Block_Generic();
+
+        [Benchmark]
+        public int SeaHash_Combine_Generic() => this.combiner.SeaHash_Combine_Generic();
 
         [Benchmark]
         public int SeaHash_Block_Generic() => this.combiner.SeaHash_Block_Generic();
@@ -88,13 +109,20 @@ namespace Haschisch.Benchmarks
             public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(1);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(1);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(1);
-            public int Murmur3A_TannergoodingAlt_Custom() => Murmur3A_TG_Alt1_Combiner.Combine(1);
+            public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(1);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(1);
+            public int Murmur3A_Combine_Generic() => default(Murmur3x8632Hasher.Combiner).Combine(1);
             public int Murmur3A_Block_Generic() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1);
+            public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1);
+            public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1);
+            public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1);
+            public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2);
             public int XXHash32_Block_Generic() => GenericCombiner<XXHash32Hasher.Block>.Combine(1);
+            public int XXHash64_Combine_Generic() => default(XXHash64Hasher.Combiner).Combine(1, 2);
             public int XXHash64_Block_Generic() => GenericCombiner<XXHash64Hasher.Block>.Combine(1);
+            public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1);
         }
 
@@ -105,13 +133,20 @@ namespace Haschisch.Benchmarks
             public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(1, 2);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(1, 2);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(1, 2);
-            public int Murmur3A_TannergoodingAlt_Custom() => Murmur3A_TG_Alt1_Combiner.Combine(1, 2);
+            public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(1, 2);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(1, 2);
+            public int Murmur3A_Combine_Generic() => default(Murmur3x8632Hasher.Combiner).Combine(1, 2);
             public int Murmur3A_Block_Generic() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2);
+            public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2);
+            public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2);
+            public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2);
+            public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2);
             public int XXHash32_Block_Generic() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2);
+            public int XXHash64_Combine_Generic() => default(XXHash64Hasher.Combiner).Combine(1, 2);
             public int XXHash64_Block_Generic() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2);
+            public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2);
         }
 
@@ -122,13 +157,20 @@ namespace Haschisch.Benchmarks
             public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(1, 2, 3, 4);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(1, 2, 3, 4);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(1, 2, 3, 4);
-            public int Murmur3A_TannergoodingAlt_Custom() => Murmur3A_TG_Alt1_Combiner.Combine(1, 2, 3, 4);
+            public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(1, 2, 3, 4);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(1, 2, 3, 4);
+            public int Murmur3A_Combine_Generic() => default(Murmur3x8632Hasher.Combiner).Combine(1, 2, 3, 4);
             public int Murmur3A_Block_Generic() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4);
+            public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2, 3, 4);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4);
+            public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2, 3, 4);
+            public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2, 3, 4);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4);
+            public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2, 3, 4);
             public int XXHash32_Block_Generic() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4);
+            public int XXHash64_Combine_Generic() => default(XXHash64Hasher.Combiner).Combine(1, 2, 3, 4);
             public int XXHash64_Block_Generic() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4);
+            public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2, 3, 4);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4);
         }
 
@@ -139,13 +181,20 @@ namespace Haschisch.Benchmarks
             public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
-            public int Murmur3A_TannergoodingAlt_Custom() => Murmur3A_TG_Alt1_Combiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Murmur3A_Combine_Generic() => default(Murmur3x8632Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Murmur3A_Block_Generic() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int XXHash32_Block_Generic() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int XXHash64_Combine_Generic() => default(XXHash64Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int XXHash64_Block_Generic() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
         }
 
@@ -158,14 +207,21 @@ namespace Haschisch.Benchmarks
             int MultiplyAddReordered_Custom();
             int MultiplyAdd_Custom();
             int Murmur3A_Tannergooding_Custom();
-            int Murmur3A_TannergoodingAlt_Custom();
+            int Murmur3A_TannergoodingWithSeed_Custom();
             int Murmur3A_Steps_Custom();
+            int Murmur3A_Combine_Generic();
             int Murmur3A_Block_Generic();
+            int HSip13_Combine_Generic();
             int HSip13_Block_Generic();
+            int HSip24_Combine_Generic();
+            int Marvin32_Combine_Generic();
             int Marvin32_Block_Generic();
+            int XXHash32_Combine_Generic();
             int XXHash32_Block_Generic();
+            int XXHash64_Combine_Generic();
             int XXHash64_Block_Generic();
             int SeaHash_Block_Generic();
+            int SeaHash_Combine_Generic();
         }
     }
 }

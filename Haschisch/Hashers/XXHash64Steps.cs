@@ -127,7 +127,7 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static ulong MixFinalLong(ulong h, ulong i)
+            internal static ulong MixFinalLong(ulong h, ulong i)
             {
                 var k1 = i;
                 k1 *= XXHash64Steps.Prime64n2;
@@ -139,7 +139,7 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static ulong MixFinalInt(ulong h, uint i)
+            internal static ulong MixFinalInt(ulong h, uint i)
             {
                 h ^= i * XXHash64Steps.Prime64n3;
                 h = (BitOps.RotateLeft(h, 23) * XXHash64Steps.Prime64n2) + XXHash64Steps.Prime64n3;

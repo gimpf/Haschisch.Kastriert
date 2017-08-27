@@ -28,22 +28,23 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
+        // baseline from PoC from issue, fastest
         [Benchmark(Baseline = true)]
-        public HashSet<Large> Murmur3x8632_WithCustomCombiner()
+        public HashSet<Large> Murmur3x8632_TG_CustomComparer()
         {
-            return this.RunHashSetBenchmark(Mumur3A_FromIssue_EqualityComparer.Default);
+            return this.RunHashSetBenchmark(Mumur3A_TG_EqualityComparer.Default);
         }
 
         [Benchmark]
-        public HashSet<Large> Murmur3x8632()
+        public HashSet<Large> Murmur3x8632_ByCombinerComparer()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<Murmur3x8632Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> Murmur3x8632_ByBlockComparer()
         {
             return this.RunHashSetBenchmark_ByBlock<Murmur3x8632Hasher.Block>();
-        }
-
-        [Benchmark]
-        public HashSet<Large> Murmur3x8632_ByStream()
-        {
-            return this.RunHashSetBenchmark_ByStream<Murmur3x8632Hasher.Stream>();
         }
 
         [Benchmark]
@@ -53,55 +54,96 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark]
-        public HashSet<Large> Marvin32()
+        public HashSet<Large> Murmur3x8632_ByStreamComparer()
+        {
+            return this.RunHashSetBenchmark_ByStream<Murmur3x8632Hasher.Stream>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> Marvin32_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<Marvin32Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> Marvin32_Block()
         {
             return this.RunHashSetBenchmark_ByBlock<Marvin32Hasher.Block>();
         }
 
         [Benchmark]
-        public HashSet<Large> HSip13()
+        public HashSet<Large> HSip13_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<HalfSip13Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> HSip13_Block()
         {
             return this.RunHashSetBenchmark_ByBlock<HalfSip13Hasher.Block>();
         }
 
         [Benchmark]
-        public HashSet<Large> XXHash32()
+        public HashSet<Large> HSip24_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<HalfSip24Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> XXHash32_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<XXHash32Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> XXHash32_Block()
         {
             return this.RunHashSetBenchmark_ByBlock<XXHash32Hasher.Block>();
         }
 
         [Benchmark]
-        public HashSet<Large> XXHash64()
+        public HashSet<Large> XXHash64_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<XXHash64Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> XXHash64_Block()
         {
             return this.RunHashSetBenchmark_ByBlock<XXHash64Hasher.Block>();
         }
 
         [Benchmark]
-        public HashSet<Large> SeaHash()
+        public HashSet<Large> SeaHash_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<SeaHasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> SeaHash_Block()
         {
             return this.RunHashSetBenchmark_ByBlock<SeaHasher.Block>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private HashSet<Large> RunHashSetBenchmark_ByHaschisch<T>()
-            where T : struct, IStreamingHasher<int>
-        {
-            return RunHashSetBenchmark(HashableEqualityComparer<Large, T>.Default);
-        }
+        private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()
+            where T : struct, IHashCodeCombiner =>
+            RunHashSetBenchmark(ByCombinerEqualityComparer<T>.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByBlock<T>()
-            where T : struct, IUnsafeBlockHasher<int>
-        {
-            return RunHashSetBenchmark(ByBlockEqualityComparer<T>.Default);
-        }
+            where T : struct, IUnsafeBlockHasher<int> =>
+            RunHashSetBenchmark(ByBlockEqualityComparer<T>.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByStream<T>()
-            where T : struct, IStreamingHasher<int>
-        {
-            return RunHashSetBenchmark(ByStreamEqualityComparer<T>.Default);
-        }
+            where T : struct, IStreamingHasher<int> =>
+            RunHashSetBenchmark(ByStreamEqualityComparer<T>.Default);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private HashSet<Large> RunHashSetBenchmark_ByHaschisch<T>()
+            where T : struct, IStreamingHasher<int> =>
+            RunHashSetBenchmark(HashableEqualityComparer<Large, T>.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark(IEqualityComparer<Large> comparer)

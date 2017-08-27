@@ -2,14 +2,13 @@
 
 namespace Haschisch
 {
-    public class HashableEqualityComparer<TValue, THasher> : IEqualityComparer<TValue>
+    public sealed class HashableEqualityComparer<TValue, THasher> : IEqualityComparer<TValue>
         where TValue : IHashable
         where THasher : struct, IStreamingHasher<int>
     {
         public static readonly HashableEqualityComparer<TValue, THasher> Default = new HashableEqualityComparer<TValue, THasher>();
 
-        public bool Equals(TValue x, TValue y) =>
-            EqualityComparer<TValue>.Default.Equals(x, y);
+        public bool Equals(TValue x, TValue y) => EqualityComparer<TValue>.Default.Equals(x, y);
 
         public int GetHashCode(TValue obj)
         {

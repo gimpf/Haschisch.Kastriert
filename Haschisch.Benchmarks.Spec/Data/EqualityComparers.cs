@@ -5,12 +5,11 @@ using Haschisch.Util;
 
 namespace Haschisch.Benchmarks
 {
-    public class Mumur3A_FromIssue_EqualityComparer : IEqualityComparer<Large>
+    public sealed class Mumur3A_TG_EqualityComparer : IEqualityComparer<Large>
     {
-        public static readonly Mumur3A_FromIssue_EqualityComparer Default = new Mumur3A_FromIssue_EqualityComparer();
+        public static readonly Mumur3A_TG_EqualityComparer Default = new Mumur3A_TG_EqualityComparer();
 
-        public bool Equals(Large x, Large y) =>
-            EqualityComparer<Large>.Default.Equals(x, y);
+        public bool Equals(Large x, Large y) => x.Equals(y);
 
         public int GetHashCode(Large obj) =>
             Murmur3A_TG_Combiner.Combine(
@@ -21,7 +20,23 @@ namespace Haschisch.Benchmarks
                 obj.List?.LongLength);
     }
 
-    public class ByBlockEqualityComparer<T> : IEqualityComparer<Large>
+    public sealed class ByCombinerEqualityComparer<T> : IEqualityComparer<Large>
+        where T : IHashCodeCombiner
+    {
+        public static readonly ByCombinerEqualityComparer<T> Default = new ByCombinerEqualityComparer<T>();
+
+        public bool Equals(Large x, Large y) => x.Equals(y);
+
+        public int GetHashCode(Large obj) =>
+            default(T).Combine(
+                obj.M.S.Arg1,
+                obj.M.S.Arg2,
+                obj.M.S.Arg3,
+                obj.M.Text,
+                obj.List?.LongLength);
+    }
+
+    public sealed class ByBlockEqualityComparer<T> : IEqualityComparer<Large>
         where T : IUnsafeBlockHasher<int>
     {
         public static readonly ByBlockEqualityComparer<T> Default = new ByBlockEqualityComparer<T>();
@@ -42,7 +57,7 @@ namespace Haschisch.Benchmarks
         }
     }
 
-    public class ByStreamEqualityComparer<T> : IEqualityComparer<Large>
+    public sealed class ByStreamEqualityComparer<T> : IEqualityComparer<Large>
         where T : IStreamingHasher<int>
     {
         public static readonly ByStreamEqualityComparer<T> Default = new ByStreamEqualityComparer<T>();
