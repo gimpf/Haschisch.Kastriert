@@ -8,7 +8,9 @@ namespace Haschisch.Hashers
     {
         public struct Block :
             IBlockHasher<int>,
-            IBlockHasher<long>
+            IBlockHasher<long>,
+            IUnsafeBlockHasher<int>,
+            IUnsafeBlockHasher<long>
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public long Hash(byte[] data, int offset, int length)
@@ -25,7 +27,11 @@ namespace Haschisch.Hashers
             int IBlockHasher<int>.Hash(byte[] data, int offset, int length) =>
                 (int)this.Hash(data, offset, length);
 
-            private long Hash(ref byte data, int length)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            int IUnsafeBlockHasher<int>.Hash(ref byte data, int length) =>
+                (int)this.Hash(ref data, length);
+
+            public long Hash(ref byte data, int length)
             {
                 SeaHashSteps.Initialize(out var a, out var b, out var c, out var d);
 
@@ -83,9 +89,51 @@ namespace Haschisch.Hashers
             private ulong c;
             private ulong d;
 
-            bool IStreamingHasherSink.AllowUnsafeWrite => false;
+            public bool AllowUnsafeWrite => true;
 
-            unsafe int IStreamingHasherSink.UnsafeWrite(ref byte value, int maxLength) => throw new NotSupportedException();
+            public unsafe int UnsafeWrite(ref byte data, int maxLength)
+            {
+                if (this.bufferIdx != 0) { throw new NotSupportedException("unaligned block hashing not supported"); }
+
+                var indexEnd = maxLength;
+                var indexFullBlockEnd = indexEnd - (maxLength % SeaHashSteps.FullBlockSize);
+
+                var ia = a;
+                var ib = b;
+                var ic = c;
+                var id = d;
+
+                for (var i = 0; i < indexFullBlockEnd; i += SeaHashSteps.FullBlockSize)
+                {
+                    var x0 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i));
+                    var x1 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + sizeof(ulong)));
+                    var x2 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + (2 * sizeof(ulong))));
+                    var x3 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + (3 * sizeof(ulong))));
+
+                    SeaHashSteps.MixStep(ref ia, ref ib, ref ic, ref id, x0, x1, x2, x3);
+                }
+
+                a = ia;
+                b = ib;
+                c = ic;
+                d = id;
+
+                var indexFullWordEnd = indexEnd - (maxLength % sizeof(ulong));
+                for (var i = indexFullBlockEnd; i < indexFullWordEnd; i += sizeof(ulong))
+                {
+                    var x0 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i));
+                    SeaHashSteps.MixStep(ref a, ref b, ref c, ref d, x0);
+                }
+
+                if (indexFullWordEnd != indexEnd)
+                {
+                    BufferUtil.AppendRaw(
+                        ref this.buffer, ref this.bufferIdx, ref data, (uint)indexFullWordEnd, (uint)maxLength);
+                }
+
+                this.length += (uint)maxLength;
+                return maxLength;
+            }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Initialize()

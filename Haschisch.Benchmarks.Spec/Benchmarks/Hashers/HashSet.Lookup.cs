@@ -31,7 +31,7 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
-        // pure overhead
+        // overhead from random number generation
         [Benchmark]
         public HashSet<Large> Murmur3x8632_WithCustomCombiner_Empty()
         {
@@ -84,6 +84,12 @@ namespace Haschisch.Benchmarks
         public HashSet<Large> XXHash64()
         {
             return this.RunHashSetBenchmark_ByBlock<XXHash64Hasher.Block>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> SeaHash()
+        {
+            return this.RunHashSetBenchmark_ByBlock<SeaHasher.Block>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

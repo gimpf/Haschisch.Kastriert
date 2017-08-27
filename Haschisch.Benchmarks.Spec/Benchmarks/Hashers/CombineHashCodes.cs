@@ -78,6 +78,9 @@ namespace Haschisch.Benchmarks
         [Benchmark]
         public int XXHash64() => this.combiner.XXHash64();
 
+        [Benchmark]
+        public int SeaHash() => this.combiner.SeaHash();
+
         private sealed class Combiner1 : ICombine
         {
             public int Empty() => 0;
@@ -93,6 +96,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1);
+            public int SeaHash() => GenericCombiner<SeaHasher.Block>.Combine(1);
         }
 
         private sealed class Combiner2 : ICombine
@@ -110,6 +114,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2);
+            public int SeaHash() => GenericCombiner<SeaHasher.Block>.Combine(1, 2);
         }
 
         private sealed class Combiner4 : ICombine
@@ -127,6 +132,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4);
+            public int SeaHash() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4);
         }
 
         private sealed class Combiner8 : ICombine
@@ -144,6 +150,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int XXHash32() => GenericCombiner<XXHash32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int XXHash64() => GenericCombiner<XXHash64Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int SeaHash() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
         }
 
         private interface ICombine
@@ -161,6 +168,7 @@ namespace Haschisch.Benchmarks
             int Murmur3A();
             int XXHash32();
             int XXHash64();
+            int SeaHash();
         }
     }
 }

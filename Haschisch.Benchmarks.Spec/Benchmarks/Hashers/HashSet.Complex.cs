@@ -90,6 +90,12 @@ namespace Haschisch.Benchmarks
             return this.RunHashSetBenchmark_ByBlock<XXHash64Hasher.Block>();
         }
 
+        [Benchmark]
+        public HashSet<Large> SeaHash()
+        {
+            return this.RunHashSetBenchmark_ByBlock<SeaHasher.Block>();
+        }
+
         private HashSet<Large> RunHashSetBenchmark_ByHaschisch<T>()
             where T : struct, IStreamingHasher<int>
         {
