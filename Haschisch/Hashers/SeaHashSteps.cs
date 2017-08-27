@@ -18,7 +18,7 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MixStep(ref ulong a, ref ulong b, ref ulong c, ref ulong d, ulong block)
         {
-            var next = Diffuse(ref a, ref b, ref c, ref d, a ^ block);
+            var next = Diffuse(a ^ block);
             a = b;
             b = c;
             c = d;
@@ -33,18 +33,18 @@ namespace Haschisch.Hashers
             x2 ^= c;
             x3 ^= d;
 
-            a = Diffuse(ref a, ref b, ref c, ref d, x0);
-            b = Diffuse(ref a, ref b, ref c, ref d, x1);
-            c = Diffuse(ref a, ref b, ref c, ref d, x2);
-            d = Diffuse(ref a, ref b, ref c, ref d, x3);
+            a = Diffuse(x0);
+            b = Diffuse(x1);
+            c = Diffuse(x2);
+            d = Diffuse(x3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Finish(ref ulong a, ref ulong b, ref ulong c, ref ulong d, ulong length) =>
-            Diffuse(ref a, ref b, ref c, ref d, a ^ b ^ c ^ d ^ length);
+            Diffuse(a ^ b ^ c ^ d ^ length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ulong Diffuse(ref ulong a, ref ulong b, ref ulong c, ref ulong d, ulong value)
+        private static ulong Diffuse(ulong value)
         {
             value *= 0x6eed0e9da4d94a4fUL;
             value ^= (value >> 32) >> ((byte)(value >> 60));
