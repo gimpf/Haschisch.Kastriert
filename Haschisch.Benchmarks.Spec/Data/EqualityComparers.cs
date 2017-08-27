@@ -13,7 +13,7 @@ namespace Haschisch.Benchmarks
             EqualityComparer<Large>.Default.Equals(x, y);
 
         public int GetHashCode(Large obj) =>
-            HashCode.Combine(
+            Murmur3A_TG_Combiner.Combine(
                 obj.M.S.Arg1,
                 obj.M.S.Arg2,
                 obj.M.S.Arg3,
