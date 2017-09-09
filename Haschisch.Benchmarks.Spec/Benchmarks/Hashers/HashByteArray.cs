@@ -66,6 +66,18 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark]
+        public int Sip13_ByBlock()
+        {
+            return HashByteArrayUtil.HashWithBlock<Sip13Hasher.Block>(this.data);
+        }
+
+        [Benchmark]
+        public int Sip24_ByBlock()
+        {
+            return HashByteArrayUtil.HashWithBlock<Sip24Hasher.Block>(this.data);
+        }
+
+        [Benchmark]
         public int Marvin32_Block()
         {
             return HashByteArrayUtil.HashWithBlock<Marvin32Hasher.Block>(this.data);

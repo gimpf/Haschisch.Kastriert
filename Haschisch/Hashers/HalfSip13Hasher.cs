@@ -79,7 +79,10 @@ namespace Haschisch.Hashers
                 v2 = pv2;
                 v3 = pv3;
 
-                return HalfSip13Steps.Finish(ref v0, ref v1, ref v2, ref v3, UnsafeByteOps.PartialToUInt32(ref data, fullBlockEnd, (uint)(lastIndex - fullBlockEnd)), (uint)length);
+                return HalfSip13Steps.Finish(
+                    ref v0, ref v1, ref v2, ref v3,
+                    UnsafeByteOps.PartialToUInt32(ref data, fullBlockEnd, (uint)(lastIndex - fullBlockEnd)),
+                    (uint)length);
             }
         }
 

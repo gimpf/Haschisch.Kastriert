@@ -90,6 +90,18 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark]
+        public HashSet<Large> Sip13_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<Sip13Hasher.Combiner>();
+        }
+
+        [Benchmark]
+        public HashSet<Large> Sip24_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<Sip24Hasher.Combiner>();
+        }
+
+        [Benchmark]
         public HashSet<Large> XXHash32_Combiner()
         {
             return this.RunHashSetBenchmark_ByCombiner<XXHash32Hasher.Combiner>();

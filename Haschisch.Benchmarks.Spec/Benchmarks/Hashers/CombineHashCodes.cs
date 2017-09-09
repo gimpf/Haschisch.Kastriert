@@ -79,6 +79,12 @@ namespace Haschisch.Benchmarks
         public int HSip24_Combine_Generic() => this.combiner.HSip24_Combine_Generic();
 
         [Benchmark]
+        public int Sip13_Combine_Generic() => this.combiner.Sip13_Combine_Generic();
+
+        [Benchmark]
+        public int Sip24_Combine_Generic() => this.combiner.Sip24_Combine_Generic();
+
+        [Benchmark]
         public int Marvin32_Combine_Generic() => this.combiner.Marvin32_Combine_Generic();
 
         [Benchmark]
@@ -116,6 +122,8 @@ namespace Haschisch.Benchmarks
             public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1);
             public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1);
+            public int Sip13_Combine_Generic() => default(Sip13Hasher.Combiner).Combine(1);
+            public int Sip24_Combine_Generic() => default(Sip24Hasher.Combiner).Combine(1);
             public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1);
             public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2);
@@ -140,6 +148,8 @@ namespace Haschisch.Benchmarks
             public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2);
             public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2);
+            public int Sip13_Combine_Generic() => default(Sip13Hasher.Combiner).Combine(1, 2);
+            public int Sip24_Combine_Generic() => default(Sip24Hasher.Combiner).Combine(1, 2);
             public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2);
             public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2);
@@ -164,6 +174,8 @@ namespace Haschisch.Benchmarks
             public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2, 3, 4);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4);
             public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2, 3, 4);
+            public int Sip13_Combine_Generic() => default(Sip13Hasher.Combiner).Combine(1, 2, 3, 4);
+            public int Sip24_Combine_Generic() => default(Sip24Hasher.Combiner).Combine(1, 2, 3, 4);
             public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2, 3, 4);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4);
             public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2, 3, 4);
@@ -188,6 +200,8 @@ namespace Haschisch.Benchmarks
             public int HSip13_Combine_Generic() => default(HalfSip13Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int HSip13_Block_Generic() => GenericCombiner<HalfSip13Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int HSip24_Combine_Generic() => default(HalfSip24Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Sip13_Combine_Generic() => default(Sip13Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int Sip24_Combine_Generic() => default(Sip24Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Marvin32_Combine_Generic() => default(Marvin32Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int Marvin32_Block_Generic() => GenericCombiner<Marvin32Hasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int XXHash32_Combine_Generic() => default(XXHash32Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
@@ -214,6 +228,8 @@ namespace Haschisch.Benchmarks
             int HSip13_Combine_Generic();
             int HSip13_Block_Generic();
             int HSip24_Combine_Generic();
+            int Sip13_Combine_Generic();
+            int Sip24_Combine_Generic();
             int Marvin32_Combine_Generic();
             int Marvin32_Block_Generic();
             int XXHash32_Combine_Generic();

@@ -75,7 +75,17 @@ namespace Haschisch.Hashers.Tests
                     "hsip24",
                     typeof(HalfSip24Hasher.Stream),
                     Stream(default(HalfSip24Hasher.Stream)),
-                    Block(default(HalfSip24Hasher.Block)))
+                    Block(default(HalfSip24Hasher.Block))),
+                HashAlgorithm.Create(
+                    "sip13",
+                    typeof(Sip13Hasher.Stream),
+                    Stream(default(Sip13Hasher.Stream)),
+                    Block(default(Sip13Hasher.Block))),
+                HashAlgorithm.Create(
+                    "sip24",
+                    typeof(Sip24Hasher.Stream),
+                    Stream(default(Sip24Hasher.Stream)),
+                    Block(default(Sip24Hasher.Block)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>

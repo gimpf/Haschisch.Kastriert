@@ -115,6 +115,8 @@ Example:
             if (args.Contains("-c:algo_hashset_lookup")) { summary = BenchmarkRunner.Run<HashSet_Lookup>(cfg); }
 
             // Suite 4, Part V: Comparing implementations for the same hash algorithm.
+            if (args.Contains("-c:sip13")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSip13>(cfg); }
+            if (args.Contains("-c:sip24")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSip24>(cfg); }
             if (args.Contains("-c:hsip13")) { summary = BenchmarkRunner.Run<HashByteArray_CompareHSip13>(cfg); }
             if (args.Contains("-c:hsip24")) { summary = BenchmarkRunner.Run<HashByteArray_CompareHSip24>(cfg); }
             if (args.Contains("-c:marvin32")) { summary = BenchmarkRunner.Run<HashByteArray_CompareMarvin32>(cfg); }
