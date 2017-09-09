@@ -31,8 +31,14 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
-        // baseline from PoC from issue, fastest
         [Benchmark(Baseline = true)]
+        public HashSet<Large> MultiplyAdd_ByCombiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<MultiplyAddReorderedCombiner>();
+        }
+
+        // baseline from PoC from issue
+        [Benchmark]
         public HashSet<Large> Murmur3x8632_TG_CustomComparer()
         {
             return this.RunHashSetBenchmark(Mumur3A_TG_EqualityComparer.Default);
