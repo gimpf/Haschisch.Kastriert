@@ -64,6 +64,7 @@ namespace Haschisch.Hashers
                 return (s0, s1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private static void Mix(ref ulong s0, ref ulong s1, ref ulong s2, ref ulong s3)
             {
                 s2 = BitOps.RotateLeft(s2, 50); s2 += s3; s0 ^= s2;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Haschisch.Util;
 
@@ -55,25 +56,36 @@ namespace Haschisch.Hashers
                 Require.ValidRange(data, offset, length);
 
                 byte empty = 0;
-                return length == 0 ?
-                    Hash(seed, ref empty, 0) :
-                    Hash(seed, ref data[offset], length);
+                if (length == 0) { return HashShort(seed, ref empty, 0); }
+                if (length < SpookyV2Steps.Long.MinLongSize) { return HashShort(seed, ref data[offset], length); }
+                return HashLong(seed, ref data[offset], length);
             }
 
             internal unsafe static (ulong, ulong) HashShort((ulong, ulong) seed, ref byte data, int length)
             {
+                Debug.Assert(length < SpookyV2Steps.Long.MinLongSize);
+
                 SpookyV2Steps.Short.Initialize(seed, out var s0, out var s1, out var s2, out var s3);
 
                 var blockEnd = length - (length % (4 * sizeof(ulong)));
+
+                var ts0 = s0;
+                var ts1 = s1;
+                var ts2 = s2;
+                var ts3 = s3;
                 for (var i = 0; i < blockEnd; i += 4 * sizeof(ulong))
                 {
                     SpookyV2Steps.Short.Update(
-                        ref s0, ref s1, ref s2, ref s3,
+                        ref ts0, ref ts1, ref ts2, ref ts3,
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 0 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 1 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 2 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 3 * sizeof(ulong))));
                 }
+                s0 = ts0;
+                s1 = ts1;
+                s2 = ts2;
+                s3 = ts3;
 
                 return SpookyV2Steps.Short.Finish(
                     ref s0, ref s1, ref s2, ref s3,
@@ -84,12 +96,9 @@ namespace Haschisch.Hashers
                     length);
             }
 
-            private unsafe static (ulong, ulong) Hash((ulong, ulong) seed, ref byte data, int length)
+            private unsafe static (ulong, ulong) HashLong((ulong, ulong) seed, ref byte data, int length)
             {
-                if (length < SpookyV2Steps.Long.MinLongSize)
-                {
-                    return HashShort(seed, ref data, length);
-                }
+                Debug.Assert(length >= SpookyV2Steps.Long.MinLongSize);
 
                 SpookyV2Steps.Long.Initialize(
                     seed,
@@ -100,12 +109,25 @@ namespace Haschisch.Hashers
                 var end = length;
                 var fullBlockEnd = length - (length % SpookyV2Steps.Long.BlockSize);
 
+                var ts0 = s0;
+                var ts1 = s1;
+                var ts2 = s2;
+                var ts3 = s3;
+                var ts4 = s4;
+                var ts5 = s5;
+                var ts6 = s6;
+                var ts7 = s7;
+                var ts8 = s8;
+                var ts9 = s9;
+                var tsA = sA;
+                var tsB = sB;
+
                 for (var i = 0; i < fullBlockEnd; i += SpookyV2Steps.Long.BlockSize)
                 {
                     SpookyV2Steps.Long.Update(
-                        ref s0, ref s1, ref s2, ref s3,
-                        ref s4, ref s5, ref s6, ref s7,
-                        ref s8, ref s9, ref sA, ref sB,
+                        ref ts0, ref ts1, ref ts2, ref ts3,
+                        ref ts4, ref ts5, ref ts6, ref ts7,
+                        ref ts8, ref ts9, ref tsA, ref tsB,
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 0 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 1 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 2 * sizeof(ulong))),
@@ -119,6 +141,19 @@ namespace Haschisch.Hashers
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 10 * sizeof(ulong))),
                         Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i + 11 * sizeof(ulong))));
                 }
+
+                s0 = ts0;
+                s1 = ts1;
+                s2 = ts2;
+                s3 = ts3;
+                s4 = ts4;
+                s5 = ts5;
+                s6 = ts6;
+                s7 = ts7;
+                s8 = ts8;
+                s9 = ts9;
+                sA = tsA;
+                sB = tsB;
 
                 return SpookyV2Steps.Long.Finish(
                     ref s0, ref s1, ref s2, ref s3,
