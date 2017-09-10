@@ -82,5 +82,11 @@ namespace Haschisch.Benchmarks
         {
             return HashByteArrayUtil.HashWithBlock<Marvin32Hasher.Block>(this.data);
         }
+
+        [Benchmark]
+        public int SpookyV2_Block()
+        {
+            return HashByteArrayUtil.HashWithBlock<SpookyV2Hasher.Block>(this.data);
+        }
     }
 }

@@ -124,6 +124,7 @@ Example:
             if (args.Contains("-c:xx32")) { summary = BenchmarkRunner.Run<HashByteArray_CompareXXHash32>(cfg); }
             if (args.Contains("-c:xx64")) { summary = BenchmarkRunner.Run<HashByteArray_CompareXXHash64>(cfg); }
             if (args.Contains("-c:sea")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSeaHash>(cfg); }
+            if (args.Contains("-c:spookyv2")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSpookyV2>(cfg); }
         }
     }
 }

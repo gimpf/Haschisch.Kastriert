@@ -146,6 +146,12 @@ namespace Haschisch.Benchmarks
             return this.RunHashSetBenchmark_ByBlock<SeaHasher.Block>();
         }
 
+        [Benchmark]
+        public HashSet<Large> SpookyV2_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<SpookyV2Hasher.Combiner>();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()
             where T : struct, IHashCodeCombiner =>
