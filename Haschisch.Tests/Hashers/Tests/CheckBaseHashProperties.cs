@@ -85,7 +85,12 @@ namespace Haschisch.Hashers.Tests
                     "sip24",
                     typeof(Sip24Hasher.Stream),
                     Stream(default(Sip24Hasher.Stream)),
-                    Block(default(Sip24Hasher.Block)))
+                    Block(default(Sip24Hasher.Block))),
+                HashAlgorithm.Create(
+                    "spookyv2",
+                    typeof(SpookyV2Hasher.Stream),
+                    Stream(default(SpookyV2Hasher.Stream)),
+                    Block(default(SpookyV2Hasher.Block)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>
