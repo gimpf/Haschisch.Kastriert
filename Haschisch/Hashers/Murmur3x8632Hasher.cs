@@ -76,7 +76,7 @@ namespace Haschisch.Hashers
                     Murmur3x8632Steps.MixStep(ref state, x0);
                 }
 
-                var s0 = UnsafeByteOps.PartialToUInt32(ref data, fullBlockEndIndex, (uint)(endIndex - fullBlockEndIndex));
+                var s0 = UnsafeByteOps.PartialToUInt32(ref data, (uint)length, (uint)fullBlockEndIndex);
                 return (int)Murmur3x8632Steps.Finish(ref state, s0, (uint)length);
             }
         }

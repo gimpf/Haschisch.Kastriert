@@ -41,7 +41,7 @@ namespace Haschisch.Util
         public unsafe static void ZeroUnusedBuffer<T>(ref T buffer, uint bufferIdx)
             where T : struct =>
             Unsafe.InitBlock(
-                Unsafe.AsPointer(ref Unsafe.Add<byte>(ref Unsafe.As<T, byte>(ref buffer), (int)bufferIdx)),
+                ref Unsafe.Add<byte>(ref Unsafe.As<T, byte>(ref buffer), (int)bufferIdx),
                 0,
                 BufferSize(ref buffer) - bufferIdx);
     }

@@ -10,9 +10,14 @@ namespace Haschisch.Util
             Unsafe.Add<byte>(ref Unsafe.As<T, byte>(ref buffer), startIndex);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe static ulong PartialToUInt64(ref byte data, int byteOffset, uint length)
+        public unsafe static ulong PartialToUInt64(ref byte data, uint dataLength, uint startIdx)
         {
+            if (startIdx >= dataLength) { return 0; }
+
+            var byteOffset = (int)startIdx;
+            var length = dataLength - startIdx;
             if (length > 8) { length = 8; }
+
             switch (length)
             {
                 case 8:
@@ -44,21 +49,21 @@ namespace Haschisch.Util
                 case 1:
                     return Unsafe.Add(ref data, byteOffset);
 
-                case 0:
-                    return 0;
-
                 default:
                     Debug.Fail("Should not get here.");
-                    break;
+                    return 0;
             }
-
-            return 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe static uint PartialToUInt32(ref byte data, int byteOffset, uint length)
+        public unsafe static uint PartialToUInt32(ref byte data, uint dataLength, uint startIdx)
         {
+            if (startIdx >= dataLength) { return 0; }
+
+            var byteOffset = (int)startIdx;
+            var length = dataLength - startIdx;
             if (length > 4) { length = 4; }
+
             switch (length)
             {
                 case 4:
@@ -74,15 +79,10 @@ namespace Haschisch.Util
                 case 1:
                     return Unsafe.Add(ref data, byteOffset);
 
-                case 0:
-                    return 0;
-
                 default:
                     Debug.Fail("Should not get here.");
-                    break;
+                    return 0;
             }
-
-            return 0;
         }
     }
 }

@@ -74,10 +74,10 @@ namespace Haschisch.Hashers
 
                 XXHash32Steps.Short.Initialize(h, (uint)length, out var state);
 
-                var s0 = UnsafeByteOps.PartialToUInt32(ref data, fullBlockEndIndex + 0 * sizeof(uint), (uint)(endIndex - (fullBlockEndIndex + 0 * sizeof(uint))));
-                var s1 = UnsafeByteOps.PartialToUInt32(ref data, fullBlockEndIndex + 1 * sizeof(uint), (uint)(endIndex - (fullBlockEndIndex + 1 * sizeof(uint))));
-                var s2 = UnsafeByteOps.PartialToUInt32(ref data, fullBlockEndIndex + 2 * sizeof(uint), (uint)(endIndex - (fullBlockEndIndex + 2 * sizeof(uint))));
-                var s3 = UnsafeByteOps.PartialToUInt32(ref data, fullBlockEndIndex + 3 * sizeof(uint), (uint)(endIndex - (fullBlockEndIndex + 3 * sizeof(uint))));
+                var s0 = UnsafeByteOps.PartialToUInt32(ref data, (uint)endIndex, (uint)(fullBlockEndIndex + 0 * sizeof(uint)));
+                var s1 = UnsafeByteOps.PartialToUInt32(ref data, (uint)endIndex, (uint)(fullBlockEndIndex + 1 * sizeof(uint)));
+                var s2 = UnsafeByteOps.PartialToUInt32(ref data, (uint)endIndex, (uint)(fullBlockEndIndex + 2 * sizeof(uint)));
+                var s3 = UnsafeByteOps.PartialToUInt32(ref data, (uint)endIndex, (uint)(fullBlockEndIndex + 3 * sizeof(uint)));
                 XXHash32Steps.Short.MixFinalPartialBlock(ref state, remaining, s0, s1, s2, s3);
 
                 return (int)XXHash32Steps.Short.Finish(ref state);

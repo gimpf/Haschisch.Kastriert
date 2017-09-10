@@ -89,7 +89,7 @@ namespace Haschisch.Hashers
 
                 return Sip24Steps.Finish(
                     ref v0, ref v1, ref v2, ref v3,
-                    UnsafeByteOps.PartialToUInt64(ref data, fullBlockEnd, (uint)(lastIndex - fullBlockEnd)),
+                    UnsafeByteOps.PartialToUInt64(ref data, (uint)lastIndex, (uint)fullBlockEnd),
                     (ulong)length);
             }
         }

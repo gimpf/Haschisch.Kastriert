@@ -72,7 +72,7 @@ namespace Haschisch.Hashers
                         ref b,
                         ref c,
                         ref d,
-                        UnsafeByteOps.PartialToUInt64(ref data, indexFullWordEnd, (uint)(indexEnd - indexFullWordEnd)));
+                        UnsafeByteOps.PartialToUInt64(ref data, (uint)indexEnd, (uint)indexFullWordEnd));
                 }
 
                 return (long)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, (uint)length);

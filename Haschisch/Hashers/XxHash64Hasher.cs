@@ -79,10 +79,10 @@ namespace Haschisch.Hashers
                 }
 
                 XXHash64Steps.Short.Initialize(h, (uint)length, out h);
-                var xp1 = UnsafeByteOps.PartialToUInt64(ref data, fullBlockEndIndex + (0 * sizeof(ulong)), (uint)(endIndex - (fullBlockEndIndex + (0 * sizeof(ulong)))));
-                var xp2 = UnsafeByteOps.PartialToUInt64(ref data, fullBlockEndIndex + (1 * sizeof(ulong)), (uint)(endIndex - (fullBlockEndIndex + (1 * sizeof(ulong)))));
-                var xp3 = UnsafeByteOps.PartialToUInt64(ref data, fullBlockEndIndex + (2 * sizeof(ulong)), (uint)(endIndex - (fullBlockEndIndex + (2 * sizeof(ulong)))));
-                var xp4 = UnsafeByteOps.PartialToUInt64(ref data, fullBlockEndIndex + (3 * sizeof(ulong)), (uint)(endIndex - (fullBlockEndIndex + (3 * sizeof(ulong)))));
+                var xp1 = UnsafeByteOps.PartialToUInt64(ref data, (uint)length, (uint)(fullBlockEndIndex + (0 * sizeof(ulong))));
+                var xp2 = UnsafeByteOps.PartialToUInt64(ref data, (uint)length, (uint)(fullBlockEndIndex + (1 * sizeof(ulong))));
+                var xp3 = UnsafeByteOps.PartialToUInt64(ref data, (uint)length, (uint)(fullBlockEndIndex + (2 * sizeof(ulong))));
+                var xp4 = UnsafeByteOps.PartialToUInt64(ref data, (uint)length, (uint)(fullBlockEndIndex + (3 * sizeof(ulong))));
                 XXHash64Steps.Short.MixFinalPartialBlock(ref h, length % (4 * sizeof(ulong)), xp1, xp2, xp3, xp4);
                 return (long)XXHash64Steps.Short.Finish(ref h);
             }

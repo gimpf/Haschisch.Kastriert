@@ -75,7 +75,7 @@ namespace Haschisch.Hashers
                 p1 = ip1;
 
                 var remaining = count % sizeof(ulong);
-                var value = UnsafeByteOps.PartialToUInt64(ref data, end, (uint)remaining);
+                var value = UnsafeByteOps.PartialToUInt64(ref data, (uint)count, (uint)end);
                 return Marvin32Steps.Finish(ref p0, ref p1, value, remaining);
             }
         }
