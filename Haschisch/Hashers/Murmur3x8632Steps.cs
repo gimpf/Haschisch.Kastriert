@@ -15,7 +15,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void MixStep(ref uint state, uint value)
+        public static uint MixStep(uint value, uint state)
         {
             value *= C1;
             value = BitOps.RotateLeft(value, 15);
@@ -24,6 +24,8 @@ namespace Haschisch.Hashers
             state ^= value;
             state = BitOps.RotateLeft(state, 13);
             state = (state * 5) + 0xe6546b64;
+
+            return state;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,17 +46,17 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint FinishWithoutPartial(ref uint state, uint length)
+        public static uint FinishWithoutPartial(uint state, uint length)
         {
             state ^= length;
             return FMix32(state);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Finish(ref uint state, uint partial, uint length)
+        public static uint Finish(uint state, uint partial, uint length)
         {
             MixFinalPartial(ref state, partial, length);
-            return FinishWithoutPartial(ref state, length);
+            return FinishWithoutPartial(state, length);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
