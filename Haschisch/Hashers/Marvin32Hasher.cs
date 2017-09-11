@@ -194,7 +194,8 @@ namespace Haschisch.Hashers
             {
                 var x1 = value1?.GetHashCode() ?? 0;
                 Marvin32Steps.Initialize(DefaultSeed, out var p0, out var p1);
-                return (int)Marvin32Steps.Finish(ref p0, ref p1, (uint) x1, sizeof(int));
+                var h = Marvin32Steps.Finish(ref p0, ref p1, (uint) x1, sizeof(int));
+                return (int)((uint)(h >> 32) ^ (uint)h);
             }
 
             public int Combine<T1, T2>(T1 value1, T2 value2)
@@ -203,7 +204,8 @@ namespace Haschisch.Hashers
                 var x2 = value2?.GetHashCode() ?? 0;
                 Marvin32Steps.Initialize(DefaultSeed, out var p0, out var p1);
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x1 | ((ulong)x2 << 32));
-                return (int)Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                var h = Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                return (int)((uint)(h >> 32) ^ (uint)h);
             }
 
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
@@ -215,7 +217,8 @@ namespace Haschisch.Hashers
                 Marvin32Steps.Initialize(DefaultSeed, out var p0, out var p1);
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x1 | ((ulong)x2 << 32));
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x3 | ((ulong)x4 << 32));
-                return (int)Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                var h = Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                return (int)((uint)(h >> 32) ^ (uint)h);
             }
 
             public int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
@@ -228,7 +231,8 @@ namespace Haschisch.Hashers
                 Marvin32Steps.Initialize(DefaultSeed, out var p0, out var p1);
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x1 | ((ulong)x2 << 32));
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x3 | ((ulong)x4 << 32));
-                return (int)Marvin32Steps.Finish(ref p0, ref p1, (uint)x5, sizeof(uint));
+                var h = Marvin32Steps.Finish(ref p0, ref p1, (uint)x5, sizeof(uint));
+                return (int)((uint)(h >> 32) ^ (uint)h);
             }
 
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
@@ -247,7 +251,8 @@ namespace Haschisch.Hashers
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x3 | ((ulong)x4 << 32));
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x5 | ((ulong)x6 << 32));
                 Marvin32Steps.Update(ref p0, ref p1, (uint)x7 | ((ulong)x8 << 32));
-                return (int)Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                var h = Marvin32Steps.Finish(ref p0, ref p1, 0, 0);
+                return (int)((uint)(h >> 32) ^ (uint)h);
             }
         }
     }

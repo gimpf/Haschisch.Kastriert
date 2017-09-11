@@ -104,7 +104,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe uint Hash_Gt24(ref byte s, uint len)
+        internal static unsafe uint Hash_Gt24(ref byte s, uint len)
         {
             Initialize_Gt24(ref s, len, out var h, out var g, out var f);
 

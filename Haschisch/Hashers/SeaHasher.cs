@@ -33,6 +33,7 @@ namespace Haschisch.Hashers
 
             public long Hash(ref byte data, int length)
             {
+                // TODO this should use the newly generated seed always; use proper seeding to validate test-vectors
                 SeaHashSteps.InitializeForTestVectors(out var a, out var b, out var c, out var d);
 
                 var indexEnd = length;

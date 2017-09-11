@@ -18,19 +18,19 @@ namespace Haschisch.Hashers.Tests
         public struct HashAlgorithm
         {
             public string Name;
-            public Type PrimaryStreamingImpl;
             public IStreamingHasher<int>[] Streaming;
             public IBlockHasher<int>[] Block;
+            public IHashCodeCombiner Combiner;
 
             public static HashAlgorithm Create(
-                string name, Type primaryImpl, IStreamingHasher<int>[] streaming, IBlockHasher<int>[] block)
+                string name, IStreamingHasher<int>[] streaming, IBlockHasher<int>[] block, IHashCodeCombiner combiner)
             {
                 return new HashAlgorithm
                 {
                     Name = name,
-                    PrimaryStreamingImpl = primaryImpl,
                     Streaming = streaming,
-                    Block = block
+                    Block = block,
+                    Combiner = combiner
                 };
             }
 
@@ -43,59 +43,59 @@ namespace Haschisch.Hashers.Tests
                 // Marvin Implementations
                 HashAlgorithm.Create(
                     "marvin32",
-                    typeof(Marvin32Hasher.Stream),
                     Stream(default(Marvin32Hasher.Stream)),
-                    Block(default(Marvin32Hasher.Block))),
+                    Block(default(Marvin32Hasher.Block)),
+                    default(Marvin32Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "murmur3-x86-32",
-                    typeof(Murmur3x8632Hasher.Stream),
                     Stream(default(Murmur3x8632Hasher.Stream)),
-                    Block(default(Murmur3x8632Hasher.Block))),
+                    Block(default(Murmur3x8632Hasher.Block)),
+                    default(Murmur3x8632Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "xxhash32",
-                    typeof(XXHash32Hasher.Stream),
                     Stream(default(XXHash32Hasher.Stream)),
-                    Block(default(XXHash32Hasher.Block))),
+                    Block(default(XXHash32Hasher.Block)),
+                    default(XXHash32Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "xxhash64",
-                    typeof(XXHash64Hasher.Stream),
                     Stream(default(XXHash64Hasher.Stream)),
-                    Block(default(XXHash64Hasher.Block))),
+                    Block(default(XXHash64Hasher.Block)),
+                    default(XXHash64Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "SeaHash",
-                    typeof(SeaHasher.Stream),
                     Stream(default(SeaHasher.Stream)),
-                    Block(default(SeaHasher.Block))),
+                    Block(default(SeaHasher.Block)),
+                    null), // TODO: only activate after fixing seeding, default(SeaHasher.Combiner)),
                 HashAlgorithm.Create(
                     "hsip13",
-                    typeof(HalfSip13Hasher.Stream),
                     Stream(default(HalfSip13Hasher.Stream)),
-                    Block(default(HalfSip13Hasher.Block))),
+                    Block(default(HalfSip13Hasher.Block)),
+                    default(HalfSip13Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "hsip24",
-                    typeof(HalfSip24Hasher.Stream),
                     Stream(default(HalfSip24Hasher.Stream)),
-                    Block(default(HalfSip24Hasher.Block))),
+                    Block(default(HalfSip24Hasher.Block)),
+                    default(HalfSip24Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "sip13",
-                    typeof(Sip13Hasher.Stream),
                     Stream(default(Sip13Hasher.Stream)),
-                    Block(default(Sip13Hasher.Block))),
+                    Block(default(Sip13Hasher.Block)),
+                    default(Sip13Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "sip24",
-                    typeof(Sip24Hasher.Stream),
                     Stream(default(Sip24Hasher.Stream)),
-                    Block(default(Sip24Hasher.Block))),
+                    Block(default(Sip24Hasher.Block)),
+                    default(Sip24Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "spookyv2",
-                    typeof(SpookyV2Hasher.Stream),
                     Stream(default(SpookyV2Hasher.Stream)),
-                    Block(default(SpookyV2Hasher.Block))),
+                    Block(default(SpookyV2Hasher.Block)),
+                    default(SpookyV2Hasher.Combiner)),
                 HashAlgorithm.Create(
                     "city32",
-                    typeof(City32Hasher.Block),
                     Stream(),
-                    Block(default(City32Hasher.Block)))
+                    Block(default(City32Hasher.Block)),
+                    default(City32Hasher.Combiner))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>
@@ -104,7 +104,7 @@ namespace Haschisch.Hashers.Tests
                 (IEqualityComparer<IHashable>)Activator.CreateInstance(
                     typeof(HashableEqualityComparer<,>).MakeGenericType(
                         typeof(IHashable),
-                        alg.PrimaryStreamingImpl))));
+                        alg.Streaming.First().GetType()))));
 
         public static IEnumerable<IBlockHasher<int>> Hashers =>
             Algorithms.Select(alg => alg.Block.First());
@@ -216,6 +216,7 @@ namespace Haschisch.Hashers.Tests
                 var hashCodes =
                     algorithm.Streaming.Select(hasher => (hasher.ToString(), HashItBy1(hasher, data, len))).ToArray()
                     .Concat(algorithm.Block.Select(hasher => (hasher.ToString(), HashItBlockwise(hasher, data, 0, len))))
+                    .Concat(IsCombinable(len) ? new[] { (algorithm.Combiner.ToString(), HashItByCombining(algorithm.Combiner, data, i)) } : Enumerable.Empty<(string, int)>())
                     .ToArray();
 
                 foreach (var hc in hashCodes.Skip(1))
@@ -223,6 +224,9 @@ namespace Haschisch.Hashers.Tests
                     Assert.AreEqual(hashCodes[0].Item2, hc.Item2, "hasher {0} failed for length {1}", hc.Item1, len);
                 }
             }
+
+            bool IsCombinable(int length) =>
+                algorithm.Combiner != null && (length == 4 || length == 8 || length == 16 || length == 32);
         }
 
         [Test]
@@ -263,6 +267,38 @@ namespace Haschisch.Hashers.Tests
                     var expected = HashItBlockwise(hasher, data, 0, i);
                     Assert.AreEqual(expected, HashItBlockwise(hasher, dataUnaligned, 1, i));
                 }
+            }
+        }
+
+        private static int HashItByCombining(IHashCodeCombiner combiner, byte[] data, int maxCount)
+        {
+            switch (maxCount)
+            {
+                case 4:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0));
+                case 8:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0),
+                        BitConverter.ToInt32(data, 4));
+                case 16:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0),
+                        BitConverter.ToInt32(data, 4),
+                        BitConverter.ToInt32(data, 8),
+                        BitConverter.ToInt32(data, 12));
+                case 32:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0),
+                        BitConverter.ToInt32(data, 4),
+                        BitConverter.ToInt32(data, 8),
+                        BitConverter.ToInt32(data, 12),
+                        BitConverter.ToInt32(data, 16),
+                        BitConverter.ToInt32(data, 20),
+                        BitConverter.ToInt32(data, 24),
+                        BitConverter.ToInt32(data, 28));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(maxCount));
             }
         }
 

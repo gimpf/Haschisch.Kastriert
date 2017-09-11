@@ -78,7 +78,7 @@ namespace Haschisch.Hashers
                     value7?.GetHashCode() ?? 0,
                     value8?.GetHashCode() ?? 0);
 
-                return (int)City32Steps.Hash_Len13to24(
+                return (int)City32Steps.Hash_Gt24(
                     ref Unsafe.As<PackedList<int, int, int, int, int, int, int, int>, byte>(ref x), 8 * sizeof(int));
             }
         }
