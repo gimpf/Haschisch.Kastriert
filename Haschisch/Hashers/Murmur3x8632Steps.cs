@@ -5,8 +5,8 @@ namespace Haschisch.Hashers
 {
     internal static class Murmur3x8632Steps
     {
-        private const uint C1 = 0xcc9e2d51;
-        private const uint C2 = 0x1b873593;
+        internal const uint C1 = 0xcc9e2d51;
+        internal const uint C2 = 0x1b873593;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Initialize(uint seed, out uint state)
@@ -60,7 +60,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint FMix32(uint h)
+        internal static uint FMix32(uint h)
         {
             h ^= h >> 16;
             h *= 0x85ebca6b;

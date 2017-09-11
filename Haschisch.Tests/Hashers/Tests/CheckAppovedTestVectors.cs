@@ -16,8 +16,8 @@ namespace Haschisch.CheckUtils
         public void Hashers_HashToApprovedTestVectors()
         {
             var basePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "./Haschisch-TestVectors");
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "./Haschisch-TestVectors");
             Directory.CreateDirectory(basePath);
 
             GenerateAndReportVectors(CheckBaseHashProperties.Algorithms, basePath);

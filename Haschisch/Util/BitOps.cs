@@ -14,6 +14,10 @@ namespace Haschisch.Util
             (value << steps) | (value >> ((sizeof(uint) * 8) - steps));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint RotateRight(uint value, int steps) =>
+            (value >> steps) | (value << ((sizeof(uint) * 8) - steps));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long RotateLeft(long value, int steps) =>
             (long)RotateLeft((ulong)value, steps);
 

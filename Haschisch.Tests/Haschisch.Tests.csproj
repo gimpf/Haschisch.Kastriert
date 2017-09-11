@@ -19,6 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestVectors\city32.test-vectors" />
     <None Remove="TestVectors\hsip13.test-vectors" />
     <None Remove="TestVectors\hsip24.test-vectors" />
     <None Remove="TestVectors\marvin32.test-vectors" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="TestVectors\city32.test-vectors" />
     <EmbeddedResource Include="TestVectors\hsip13.test-vectors" />
     <EmbeddedResource Include="TestVectors\hsip24.test-vectors" />
     <EmbeddedResource Include="TestVectors\marvin32.test-vectors" />

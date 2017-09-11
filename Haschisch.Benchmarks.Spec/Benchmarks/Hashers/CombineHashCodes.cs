@@ -111,6 +111,9 @@ namespace Haschisch.Benchmarks
         [Benchmark]
         public int SpookyV2_Combine_Generic() => this.combiner.SpookyV2_Combine_Generic();
 
+        [Benchmark]
+        public int City32_Combine_Generic() => this.combiner.City32_Combine_Generic();
+
         private sealed class Combiner1 : ICombine
         {
             public int Empty() => 0;
@@ -136,6 +139,7 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1);
             public int SpookyV2_Combine_Generic() => default(SpookyV2Hasher.Combiner).Combine(1);
+            public int City32_Combine_Generic() => default(City32Hasher.Combiner).Combine(1);
         }
 
         private sealed class Combiner2 : ICombine
@@ -163,6 +167,7 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2);
             public int SpookyV2_Combine_Generic() => default(SpookyV2Hasher.Combiner).Combine(1, 2);
+            public int City32_Combine_Generic() => default(City32Hasher.Combiner).Combine(1, 2);
         }
 
         private sealed class Combiner4 : ICombine
@@ -190,6 +195,7 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2, 3, 4);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4);
             public int SpookyV2_Combine_Generic() => default(SpookyV2Hasher.Combiner).Combine(1, 2, 3, 4);
+            public int City32_Combine_Generic() => default(City32Hasher.Combiner).Combine(1, 2, 3, 4);
         }
 
         private sealed class Combiner8 : ICombine
@@ -217,6 +223,7 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine_Generic() => default(SeaHasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int SeaHash_Block_Generic() => GenericCombiner<SeaHasher.Block>.Combine(1, 2, 3, 4, 5, 6, 7, 8);
             public int SpookyV2_Combine_Generic() => default(SpookyV2Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
+            public int City32_Combine_Generic() => default(City32Hasher.Combiner).Combine(1, 2, 3, 4, 5, 6, 7, 8);
         }
 
         private interface ICombine
@@ -246,6 +253,7 @@ namespace Haschisch.Benchmarks
             int SeaHash_Block_Generic();
             int SeaHash_Combine_Generic();
             int SpookyV2_Combine_Generic();
+            int City32_Combine_Generic();
         }
     }
 }

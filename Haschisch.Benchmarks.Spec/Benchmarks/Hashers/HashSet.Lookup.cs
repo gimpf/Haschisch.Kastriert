@@ -153,6 +153,12 @@ namespace Haschisch.Benchmarks
             return this.RunHashSetBenchmark_ByCombiner<SpookyV2Hasher.Combiner>();
         }
 
+        [Benchmark]
+        public HashSet<Large> City32_Combiner()
+        {
+            return this.RunHashSetBenchmark_ByCombiner<City32Hasher.Combiner>();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()
             where T : struct, IHashCodeCombiner =>

@@ -88,5 +88,11 @@ namespace Haschisch.Benchmarks
         {
             return HashByteArrayUtil.HashWithBlock<SpookyV2Hasher.Block>(this.data);
         }
+
+        [Benchmark]
+        public int City32_Block()
+        {
+            return HashByteArrayUtil.HashWithBlock<City32Hasher.Block>(this.data);
+        }
     }
 }

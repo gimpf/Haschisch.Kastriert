@@ -90,19 +90,24 @@ namespace Haschisch.Hashers.Tests
                     "spookyv2",
                     typeof(SpookyV2Hasher.Stream),
                     Stream(default(SpookyV2Hasher.Stream)),
-                    Block(default(SpookyV2Hasher.Block)))
+                    Block(default(SpookyV2Hasher.Block))),
+                HashAlgorithm.Create(
+                    "city32",
+                    typeof(City32Hasher.Block),
+                    Stream(),
+                    Block(default(City32Hasher.Block)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>
             new IEqualityComparer<IHashable>[] { EqualityComparer<IHashable>.Default }
-            .Concat(Algorithms.Select(alg =>
+            .Concat(Algorithms.Where(x => x.Streaming.Any()).Select(alg =>
                 (IEqualityComparer<IHashable>)Activator.CreateInstance(
                     typeof(HashableEqualityComparer<,>).MakeGenericType(
                         typeof(IHashable),
                         alg.PrimaryStreamingImpl))));
 
-        public static IEnumerable<IStreamingHasher<int>> Hashers =>
-            Algorithms.Select(alg => alg.Streaming.First());
+        public static IEnumerable<IBlockHasher<int>> Hashers =>
+            Algorithms.Select(alg => alg.Block.First());
 
         [Test]
         [TestCaseSource(nameof(EqualityComparers))]
@@ -139,7 +144,7 @@ namespace Haschisch.Hashers.Tests
 
         [Test]
         [TestCaseSource(nameof(Hashers))]
-        public void HashCode_WithAddedByte_IsDifferent(IStreamingHasher<int> hasher)
+        public void HashCode_WithAddedByte_IsDifferent(IBlockHasher<int> hasher)
         {
             DoCheck.That((byte[] data, byte inserted) =>
             {
@@ -158,7 +163,7 @@ namespace Haschisch.Hashers.Tests
 
         [Test]
         [TestCaseSource(nameof(Hashers))]
-        public void HashCode_WithChangedBit_IsDifferent(IStreamingHasher<int> hasher)
+        public void HashCode_WithChangedBit_IsDifferent(IBlockHasher<int> hasher)
         {
             DoCheck.That((byte[] data) =>
             {
@@ -177,7 +182,7 @@ namespace Haschisch.Hashers.Tests
 
         [Test]
         [TestCaseSource(nameof(Hashers))]
-        public void HashCode_WithNullPadding_IsDifferent(IStreamingHasher<int> hasher)
+        public void HashCode_WithNullPadding_IsDifferent(IBlockHasher<int> hasher)
         {
             // Marvin fails this by construction. Nothing we can do here.
             //if (hasher.GetType() == typeof(Marvin32Hasher.Stream)) { return; }
@@ -209,7 +214,7 @@ namespace Haschisch.Hashers.Tests
             {
                 var len = i;
                 var hashCodes =
-                    algorithm.Streaming.Select(hasher => (hasher.ToString(), HashIt(hasher, data, len))).ToArray()
+                    algorithm.Streaming.Select(hasher => (hasher.ToString(), HashItBy1(hasher, data, len))).ToArray()
                     .Concat(algorithm.Block.Select(hasher => (hasher.ToString(), HashItBlockwise(hasher, data, 0, len))))
                     .ToArray();
 
@@ -224,12 +229,14 @@ namespace Haschisch.Hashers.Tests
         [TestCaseSource(nameof(Algorithms))]
         public void HashCode_UsingDifferentStreamingMethods_IsEqual(HashAlgorithm algorithm)
         {
+            if (!algorithm.Streaming.Any()) { return; }
+
             var hasher = algorithm.Streaming.First();
 
             var data = Enumerable.Range(0, 512).Select(x => (byte)x).ToArray();
             for (var i = 0; i <= data.Length; i++)
             {
-                var expected = HashIt(hasher, data, i);
+                var expected = HashItBy1(hasher, data, i);
                 Assert.AreEqual(expected, HashItBy2(hasher, data, i), "by2 failed for length {0}", i);
                 Assert.AreEqual(expected, HashItBy4(hasher, data, i), "by4 failed for length {0}", i);
                 Assert.AreEqual(expected, HashItBy8(hasher, data, i), "by8 failed for length {0}", i);
@@ -259,7 +266,12 @@ namespace Haschisch.Hashers.Tests
             }
         }
 
-        private static int HashIt(IStreamingHasher<int> hasher, byte[] data, int maxCount)
+        private static int HashIt(IBlockHasher<int> hasher, byte[] data, int maxCount)
+        {
+            return hasher.Hash(data, 0, maxCount);
+        }
+
+        private static int HashItBy1(IStreamingHasher<int> hasher, byte[] data, int maxCount)
         {
             hasher.Initialize();
             for (var i = 0; i < maxCount; i++) { hasher.Write8(data[i]); }
