@@ -5,9 +5,11 @@ namespace Haschisch.Benchmarks
 {
     public static class HashByteArrayUtil
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int HashWithBlock<T>(byte[] data) where T : struct, IBlockHasher<int> =>
             default(T).Hash(data, 0, data.Length);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int HashWithStreaming<T>(byte[] data)
             where T : struct, IStreamingHasher<int>
         {
@@ -33,6 +35,7 @@ namespace Haschisch.Benchmarks
             return hasher.Finish();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int HashWithStreamingByByte<T>(byte[] data)
             where T : struct, IStreamingHasher<int>
         {
@@ -45,6 +48,7 @@ namespace Haschisch.Benchmarks
             return hasher.Finish();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int HashWithStreamingByBlockedU32Unsafe<T>(byte[] data)
             where T : struct, IStreamingHasher<int>
         {
