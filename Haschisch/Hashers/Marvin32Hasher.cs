@@ -58,7 +58,7 @@ namespace Haschisch.Hashers
             {
                 Marvin32Steps.Initialize(seed, out var p0, out var p1);
 
-                var end = count - (count % sizeof(ulong));
+                var end = count & ~(sizeof(ulong) - 1);
 
                 // making temporary copies of the state vars around loops seems to be
                 // one of the best tricks to help the JIT compiler producing better code;
@@ -74,7 +74,7 @@ namespace Haschisch.Hashers
                 p0 = ip0;
                 p1 = ip1;
 
-                var remaining = count % sizeof(ulong);
+                var remaining = count & (sizeof(ulong) - 1);
                 var value = UnsafeByteOps.PartialToUInt64(ref data, (uint)count, (uint)end);
                 return Marvin32Steps.Finish(ref p0, ref p1, value, remaining);
             }

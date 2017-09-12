@@ -36,8 +36,7 @@ namespace Haschisch.Hashers
                 // TODO this should use the newly generated seed always; use proper seeding to validate test-vectors
                 SeaHashSteps.InitializeForTestVectors(out var a, out var b, out var c, out var d);
 
-                var indexEnd = length;
-                var indexFullBlockEnd = indexEnd - (length % SeaHashSteps.FullBlockSize);
+                var indexFullBlockEnd = length & ~(SeaHashSteps.FullBlockSize - 1);
 
                 var ia = a;
                 var ib = b;
@@ -59,21 +58,21 @@ namespace Haschisch.Hashers
                 c = ic;
                 d = id;
 
-                var indexFullWordEnd = indexEnd - (length % sizeof(ulong));
+                var indexFullWordEnd = length & ~(sizeof(ulong) - 1);
                 for (var i = indexFullBlockEnd; i < indexFullWordEnd; i += sizeof(ulong))
                 {
                     var x0 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i));
                     SeaHashSteps.MixStep(ref a, ref b, ref c, ref d, x0);
                 }
 
-                if (indexFullWordEnd != indexEnd)
+                if (indexFullWordEnd != length)
                 {
                     SeaHashSteps.MixStep(
                         ref a,
                         ref b,
                         ref c,
                         ref d,
-                        UnsafeByteOps.PartialToUInt64(ref data, (uint)indexEnd, (uint)indexFullWordEnd));
+                        UnsafeByteOps.PartialToUInt64(ref data, (uint)length, (uint)indexFullWordEnd));
                 }
 
                 return (long)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, (uint)length);
@@ -96,8 +95,7 @@ namespace Haschisch.Hashers
             {
                 if (this.bufferIdx != 0) { throw new NotSupportedException("unaligned block hashing not supported"); }
 
-                var indexEnd = maxLength;
-                var indexFullBlockEnd = indexEnd - (maxLength % SeaHashSteps.FullBlockSize);
+                var indexFullBlockEnd = maxLength & ~(SeaHashSteps.FullBlockSize - 1);
 
                 var ia = a;
                 var ib = b;
@@ -119,14 +117,14 @@ namespace Haschisch.Hashers
                 c = ic;
                 d = id;
 
-                var indexFullWordEnd = indexEnd - (maxLength % sizeof(ulong));
+                var indexFullWordEnd = maxLength & ~(sizeof(ulong) - 1);
                 for (var i = indexFullBlockEnd; i < indexFullWordEnd; i += sizeof(ulong))
                 {
                     var x0 = Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i));
                     SeaHashSteps.MixStep(ref a, ref b, ref c, ref d, x0);
                 }
 
-                if (indexFullWordEnd != indexEnd)
+                if (indexFullWordEnd != maxLength)
                 {
                     BufferUtil.AppendRaw(
                         ref this.buffer, ref this.bufferIdx, ref data, (uint)indexFullWordEnd, (uint)maxLength);

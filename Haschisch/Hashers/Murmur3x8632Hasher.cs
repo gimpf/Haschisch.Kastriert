@@ -47,10 +47,9 @@ namespace Haschisch.Hashers
             public int Hash(uint seed, ref byte data, int length)
             {
                 const int MultiBlockSize = 4 * sizeof(uint);
-                var endIndex = length;
-                var remaining = length % sizeof(uint);
-                var multiBlockEndIndex = length - (length % MultiBlockSize);
-                var fullBlockEndIndex = endIndex - remaining;
+                var remaining = length & (sizeof(uint) - 1);
+                var multiBlockEndIndex = length & ~(MultiBlockSize - 1);
+                var fullBlockEndIndex = length - remaining;
 
                 Murmur3x8632Steps.Initialize(seed, out var state);
 

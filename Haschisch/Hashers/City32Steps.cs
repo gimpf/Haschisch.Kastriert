@@ -223,7 +223,6 @@ namespace Haschisch.Hashers
         private unsafe static uint Fetch32(ref byte s, uint idx) =>
             Unsafe.As<byte, uint>(ref Unsafe.Add<byte>(ref s, (int)idx));
 
-        // called PERMUTE3 in the reference implementation!?
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private unsafe static void Rotate(ref uint a, ref uint b, ref uint c)
         {

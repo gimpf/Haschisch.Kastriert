@@ -67,7 +67,7 @@ namespace Haschisch.Hashers
 
                 SpookyV2Steps.Short.Initialize(seed, out var s0, out var s1, out var s2, out var s3);
 
-                var blockEnd = length - (length % (4 * sizeof(ulong)));
+                var blockEnd = length & ~((4 * sizeof(ulong)) - 1);
 
                 var ts0 = s0;
                 var ts1 = s1;

@@ -54,7 +54,7 @@ namespace Haschisch.Hashers
             private long Hash(ulong seed, ref byte data, int length)
             {
                 var endIndex = length;
-                var remaining = length % XXHash64Steps.FullBlockSize;
+                var remaining = length & (XXHash64Steps.FullBlockSize - 1);
                 var fullBlockEndIndex = endIndex - remaining;
 
                 ulong h;
@@ -145,8 +145,7 @@ namespace Haschisch.Hashers
             {
                 if (this.bufferIdx != 0) { throw new NotSupportedException("unaligned block hashing not supported"); }
 
-                var blockSize = BufferUtil.BufferSize(ref this.buffer);
-                var blockEnd = maxLength - (maxLength % blockSize);
+                var blockEnd = maxLength & ~(XXHash64Steps.FullBlockSize - 1);
 
                 if ((this.length + (ulong)maxLength) > XXHash64Steps.FullBlockSize)
                 {
@@ -159,7 +158,7 @@ namespace Haschisch.Hashers
                     var iv2 = this.v2;
                     var iv3 = this.v3;
                     var iv4 = this.v4;
-                    for (var i = 0u; i < blockEnd; i += blockSize)
+                    for (var i = 0u; i < blockEnd; i += XXHash64Steps.FullBlockSize)
                     {
                         XXHash64Steps.Long.MixStep(
                             ref iv1,
