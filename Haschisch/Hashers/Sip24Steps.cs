@@ -45,7 +45,8 @@ namespace Haschisch.Hashers
             MixState(ref v0, ref v1, ref v2, ref v3);
         }
 
-        private static void MixState(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void MixState(ref ulong v0, ref ulong v1, ref ulong v2, ref ulong v3)
         {
             unchecked
             {

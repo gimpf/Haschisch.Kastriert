@@ -61,31 +61,12 @@ namespace Haschisch.Hashers
                 Sip24Steps.Initialize(seed, out var v0, out var v1, out var v2, out var v3);
 
                 var lastIndex = length;
-                var bigBlockEnd = length - (length % (4 * sizeof(ulong)));
-                var fullBlockEnd = length - (length % sizeof(ulong));
+                var fullBlockEnd = length & ~(sizeof(ulong) - 1);
 
-                var pv0 = v0;
-                var pv1 = v1;
-                var pv2 = v2;
-                var pv3 = v3;
-
-                for (var i = 0; i < bigBlockEnd; i += 4 * sizeof(ulong))
+                for (var i = 0; i < fullBlockEnd; i += sizeof(ulong))
                 {
-                    Sip24Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i)));
-                    Sip24Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + sizeof(ulong))));
-                    Sip24Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + (2 * sizeof(ulong)))));
-                    Sip24Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, ulong>(ref Unsafe.Add(ref data, i + (3 * sizeof(ulong)))));
+                    Sip24Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i)));
                 }
-
-                for (var i = bigBlockEnd; i < fullBlockEnd; i += sizeof(ulong))
-                {
-                    Sip24Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref data, i)));
-                }
-
-                v0 = pv0;
-                v1 = pv1;
-                v2 = pv2;
-                v3 = pv3;
 
                 return Sip24Steps.Finish(
                     ref v0, ref v1, ref v2, ref v3,
