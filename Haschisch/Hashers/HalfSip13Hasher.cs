@@ -48,40 +48,16 @@ namespace Haschisch.Hashers
             {
                 HalfSip13Steps.Initialize(seed, out var v0, out var v1, out var v2, out var v3);
 
-                var lastIndex = length;
-                var bigBlockEnd = length - (length % (8 * sizeof(uint)));
-                var fullBlockEnd = length - (length % sizeof(uint));
+                var fullBlockEnd = length & ~(sizeof(uint) - 1);
 
-                var pv0 = v0;
-                var pv1 = v1;
-                var pv2 = v2;
-                var pv3 = v3;
-
-                for (var i = 0; i < bigBlockEnd; i += 8 * sizeof(uint))
+                for (var i = 0; i < fullBlockEnd; i += sizeof(uint))
                 {
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i)));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + sizeof(uint))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (2 * sizeof(uint)))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (3 * sizeof(uint)))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (4 * sizeof(uint)))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (5 * sizeof(uint)))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (6 * sizeof(uint)))));
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i + (7 * sizeof(uint)))));
+                    HalfSip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i)));
                 }
-
-                for (var i = bigBlockEnd; i < fullBlockEnd; i += sizeof(uint))
-                {
-                    HalfSip13Steps.SipCRound(ref pv0, ref pv1, ref pv2, ref pv3, Unsafe.As<byte, uint>(ref Unsafe.Add(ref data, i)));
-                }
-
-                v0 = pv0;
-                v1 = pv1;
-                v2 = pv2;
-                v3 = pv3;
 
                 return HalfSip13Steps.Finish(
                     ref v0, ref v1, ref v2, ref v3,
-                    UnsafeByteOps.PartialToUInt32(ref data, (uint)lastIndex, (uint)fullBlockEnd),
+                    UnsafeByteOps.PartialToUInt32(ref data, (uint)length, (uint)fullBlockEnd),
                     (uint)length);
             }
         }
