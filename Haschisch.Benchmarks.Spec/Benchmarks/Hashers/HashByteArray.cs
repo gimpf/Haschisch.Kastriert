@@ -29,70 +29,99 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
-        [Benchmark]
-        public int SeaHash_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<SeaHasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "sea", "prime", "i")]
+        public int SeaHash_Block() => HashByteArrayUtil.HashWithBlock<SeaHasher.Block>(this.data);
 
-        [Benchmark]
-        public int Murmur3x8632_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<Murmur3x8632Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "sea", "variant")]
+        public int SeaHash_Stream() => HashByteArrayUtil.HashWithStreaming<SeaHasher.Stream>(this.data);
 
-        [Benchmark]
-        public int XxHash32_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<XXHash32Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "sea", "variant")]
+        public int SeaHash_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<SeaHasher.Stream>(this.data);
 
-        [Benchmark]
-        public int XxHash64_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<XXHash64Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "murmur-3-32", "prime")]
+        public int Murmur3x8632_Block() => HashByteArrayUtil.HashWithBlock<Murmur3x8632Hasher.Block>(this.data);
 
-        [Benchmark]
-        public int HalfSip13_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<HalfSip13Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "murmur-3-32", "variant")]
+        public int Murmur3x8632_Stream() => HashByteArrayUtil.HashWithStreaming<Murmur3x8632Hasher.Stream>(this.data);
 
-        [Benchmark]
-        public int HalfSip24_ByBlock()
-        {
-            return HashByteArrayUtil.HashWithBlock<HalfSip24Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "murmur-3-32", "variant")]
+        public int Murmur3x8632_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<Murmur3x8632Hasher.Stream>(this.data);
 
-        [Benchmark]
-        public int Sip13_ByBlock()
-        {
-            return HashByteArrayUtil.HashWithBlock<Sip13Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "prime")]
+        public int XxHash32_Block() => HashByteArrayUtil.HashWithBlock<XXHash32Hasher.Block>(this.data);
 
-        [Benchmark]
-        public int Sip24_ByBlock()
-        {
-            return HashByteArrayUtil.HashWithBlock<Sip24Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "variant")]
+        public int XxHash32_Stream() => HashByteArrayUtil.HashWithStreaming<XXHash32Hasher.Stream>(this.data);
 
-        [Benchmark]
-        public int Marvin32_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<Marvin32Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "variant")]
+        public int XxHash32_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<XXHash32Hasher.Stream>(this.data);
 
-        [Benchmark]
-        public int SpookyV2_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<SpookyV2Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "prime")]
+        public int XxHash64_Block() => HashByteArrayUtil.HashWithBlock<XXHash64Hasher.Block>(this.data);
 
-        [Benchmark]
-        public int City32_Block()
-        {
-            return HashByteArrayUtil.HashWithBlock<City32Hasher.Block>(this.data);
-        }
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "variant")]
+        public int XxHash64_Stream() => HashByteArrayUtil.HashWithStreaming<XXHash64Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "variant")]
+        public int XxHash64_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<XXHash64Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-1-3", "prime")]
+        public int HalfSip13_Block() => HashByteArrayUtil.HashWithBlock<HalfSip13Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-1-3", "variant")]
+        public int HalfSip13_Stream() => HashByteArrayUtil.HashWithStreaming<HalfSip13Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-1-3", "variant")]
+        public int HalfSip13_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<HalfSip13Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-2-4", "prime")]
+        public int HalfSip24_Block() => HashByteArrayUtil.HashWithBlock<HalfSip24Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-2-4", "variant")]
+        public int HalfSip24_Stream() => HashByteArrayUtil.HashWithStreaming<HalfSip24Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-2-4", "variant")]
+        public int HalfSip24_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<HalfSip24Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-1-3", "prime")]
+        public int Sip13_Block() => HashByteArrayUtil.HashWithBlock<Sip13Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-1-3", "variant")]
+        public int Sip13_Stream() => HashByteArrayUtil.HashWithStreaming<Sip13Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-1-3", "variant")]
+        public int Sip13_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<Sip13Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-2-4", "prime")]
+        public int Sip24_Block() => HashByteArrayUtil.HashWithBlock<Sip24Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-2-4", "variant")]
+        public int Sip24_Stream() => HashByteArrayUtil.HashWithStreaming<Sip24Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "sip", "sip-2-4", "variant")]
+        public int Sip24_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<Sip24Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "marvin32", "prime")]
+        public int Marvin32_Block() => HashByteArrayUtil.HashWithBlock<Marvin32Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "marvin32", "variant")]
+        public int Marvin32_Stream() => HashByteArrayUtil.HashWithStreaming<Marvin32Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "marvin32", "variant")]
+        public int Marvin32_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<Marvin32Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "spookyv2", "prime")]
+        public int SpookyV2_Block() => HashByteArrayUtil.HashWithBlock<SpookyV2Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "spookyv2", "variant")]
+        public int SpookyV2_Stream() => HashByteArrayUtil.HashWithStreaming<SpookyV2Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "spookyv2", "variant")]
+        public int SpookyV2_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<SpookyV2Hasher.Stream>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "city32", "prime")]
+        public int City32_Block() => HashByteArrayUtil.HashWithBlock<City32Hasher.Block>(this.data);
+
+
     }
 }

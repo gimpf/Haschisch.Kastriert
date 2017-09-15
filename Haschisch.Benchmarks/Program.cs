@@ -7,6 +7,7 @@ using BenchmarkDotNet.Horology;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Validators;
 
 namespace Haschisch.Benchmarks
 {
@@ -23,16 +24,22 @@ namespace Haschisch.Benchmarks
     core_x64
     mono_x64
 
--f                   accept somewhat lower accuracy for quicker runs
+--quick              accept somewhat lower accuracy for quicker runs
 --quick-and-dirty    accept very low accuracy for quick bench runs
 
--c:<BenchmarkName>    activate a specific benchmark
-    algo_block     Compare algorithms when hashing byte-arrays
-    algo_combiner  Compare alg's when combining hash-codes
-    algo_hashset   Compare alg's when accessing hash-sets
+-- BENCHMARK-SWITCHER-OPTIONS
 
-Example:
--j:clr_x64 --quick-and-dirty -c:algo_block
+where BENCHMARK-SWITCHER-OPTIONS is
+<BenchmarkTypeSelection> [--join] [--category=<CAT>] [--allcategories=<CATS>] [--anycategories=<CATS>]
+
+<BenchmarkTypeSelection>: * | HashByteArray | CombineHashCode | AccessHashSet
+<CAT>: sea, xx32, xx64, hsip, hsip-1-3, hsip-2-3, sip, sip-1-3, sip-2-4, city32, marvin32, murmur-3-32, spookyv2
+       prime, variant
+       array, combine, throughput, hashset
+
+Examples:
+-j:clr_x64 --quick-and-dirty -- * --join --allcategories=sea
+-j:clr_x64 --quick -- * --join --allcategories=sea,throughput
 ");
                 return;
             }
@@ -86,45 +93,15 @@ Example:
             var cfg = ManualConfig
                 .Create(DefaultConfig.Instance)
                 .With(new ThroughputColumn())
+                .With(ExecutionValidator.FailOnError)
                 .With(jobs.ToArray());
 
-            Summary summary;
-
-            // Suite 1: Compare hash algorithm performance.
-            //
-            // Compare all interesting algorithms to each other using their fastest
-            // implementation from this solution, which is usually their block-hasher
-            // that uses unsafe array access, inlined-static methods for implementation which
-            // access their hasher-state using local variables and make some funny copies
-            // of those state-vars to help the jitter to generate not the worst possible code
-            if (args.Contains("-c:algo_block")) { summary = BenchmarkRunner.Run<HashByteArray>(cfg); }
-
-            // Suite 2: Compare algorithm performance for combining Int32 hash-codes
-            //
-            // This is mostly an exercise in very small initialization overhead and manually inlining
-            // all code, as any kind of abstraction in .NET _costs_.
-            if (args.Contains("-c:algo_combiner")) { summary = BenchmarkRunner.Run<CombineHashCodes>(cfg); }
-
-            // Suite 3: Compare hash algorithm performance when used for .NET HashSet accesses
-            //
-            // A highly misleading benchmark as of now.
-            if (args.Contains("-c:algo_hashset")) { summary = BenchmarkRunner.Run<HashSet_Complex>(cfg); }
-            if (args.Contains("-c:algo_hashset_fill")) { summary = BenchmarkRunner.Run<HashSet_Fill>(cfg); }
-            if (args.Contains("-c:algo_hashset_copy")) { summary = BenchmarkRunner.Run<HashSet_CopyCtor>(cfg); }
-            if (args.Contains("-c:algo_hashset_remove")) { summary = BenchmarkRunner.Run<HashSet_Remove>(cfg); }
-            if (args.Contains("-c:algo_hashset_lookup")) { summary = BenchmarkRunner.Run<HashSet_Lookup>(cfg); }
-
-            // Suite 4, Part V: Comparing implementations for the same hash algorithm.
-            if (args.Contains("-c:sip13")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSip13>(cfg); }
-            if (args.Contains("-c:sip24")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSip24>(cfg); }
-            if (args.Contains("-c:hsip13")) { summary = BenchmarkRunner.Run<HashByteArray_CompareHSip13>(cfg); }
-            if (args.Contains("-c:hsip24")) { summary = BenchmarkRunner.Run<HashByteArray_CompareHSip24>(cfg); }
-            if (args.Contains("-c:marvin32")) { summary = BenchmarkRunner.Run<HashByteArray_CompareMarvin32>(cfg); }
-            if (args.Contains("-c:murmur3a")) { summary = BenchmarkRunner.Run<HashByteArray_CompareMurmur3x8632>(cfg); }
-            if (args.Contains("-c:xx32")) { summary = BenchmarkRunner.Run<HashByteArray_CompareXXHash32>(cfg); }
-            if (args.Contains("-c:xx64")) { summary = BenchmarkRunner.Run<HashByteArray_CompareXXHash64>(cfg); }
-            if (args.Contains("-c:sea")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSeaHash>(cfg); }
-            if (args.Contains("-c:spookyv2")) { summary = BenchmarkRunner.Run<HashByteArray_CompareSpookyV2>(cfg); }
+            if (args.Contains("--"))
+            {
+                BenchmarkSwitcher
+                    .FromAssembly(typeof(HashByteArray).Assembly)
+                    .Run(args.SkipWhile(x => x != "--").Skip(1).ToArray(), cfg);
+            }
         }
     }
 }

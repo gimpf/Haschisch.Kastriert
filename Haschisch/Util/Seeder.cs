@@ -29,7 +29,7 @@ namespace Haschisch.Util
             result = BitConverter.ToUInt32(key, 0);
         }
 
-        private static byte[] GetBytes(int bytes)
+        public static byte[] GetBytes(int bytes)
         {
             var key = new byte[bytes];
             var rng = RandomNumberGenerator.Create();

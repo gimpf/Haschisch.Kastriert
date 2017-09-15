@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Haschisch.Hashers;
 using Haschisch.Util;
 
 namespace Haschisch.Benchmarks
@@ -7,7 +8,7 @@ namespace Haschisch.Benchmarks
     // - extend with seed
     public static class Murmur3A_TG_WithSeed_Combiner
     {
-        private static readonly int Seed = GetNewSeed();
+        internal static readonly int Seed = (int)Murmur3x8632Hasher.DefaultSeed;
 
         public static int Combine<T1>(T1 value1)
         {
@@ -20,6 +21,14 @@ namespace Haschisch.Benchmarks
             var combinedValue = CombineValue(value1?.GetHashCode() ?? 0, Seed);
             combinedValue = CombineValue(value2?.GetHashCode() ?? 0, combinedValue);
             return FinalizeValue(combinedValue, sizeof(int) * 2);
+        }
+
+        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+        {
+            var combinedValue = CombineValue(value1?.GetHashCode() ?? 0, Seed);
+            combinedValue = CombineValue(value2?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 3);
         }
 
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
@@ -53,6 +62,21 @@ namespace Haschisch.Benchmarks
             combinedValue = CombineValue(value7?.GetHashCode() ?? 0, combinedValue);
             combinedValue = CombineValue(value8?.GetHashCode() ?? 0, combinedValue);
             return FinalizeValue(combinedValue, sizeof(int) * 8);
+        }
+
+        public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+            T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8, T9 value9)
+        {
+            var combinedValue = CombineValue(value1?.GetHashCode() ?? 0, Seed);
+            combinedValue = CombineValue(value2?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value4?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value5?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value6?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value7?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value8?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value9?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 9);
         }
 
         private static int CombineValue(int value, int seed)
@@ -97,12 +121,6 @@ namespace Haschisch.Benchmarks
             // This pattern is recognized by the JIT and should be optimized
             // to a ROL instruction rather than two shifts.
             return unchecked((value << bits) | (value >> (32 - bits)));
-        }
-
-        private static int GetNewSeed()
-        {
-            Seeder.GetNewSeed(out uint seed);
-            return (int)seed;
         }
     }
 }
