@@ -20,10 +20,10 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeForTestVectors(out ulong a, out ulong b, out ulong c, out ulong d)
         {
-            a = 0x16f11fe89b0d677cUL;
-            b = 0xb480a793d8e6c86cUL;
-            c = 0x6fe2e5aaf078ebc9UL;
-            d = 0x14f994a4c5259381UL;
+            a = TestVectorSeedA;
+            b = TestVectorSeedB;
+            c = TestVectorSeedC;
+            d = TestVectorSeedD;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

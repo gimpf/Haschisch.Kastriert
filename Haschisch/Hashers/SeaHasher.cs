@@ -198,11 +198,6 @@ namespace Haschisch.Hashers
 
         public struct Combiner : IHashCodeCombiner
         {
-            public static ulong DefaultSeedA;
-            public static ulong DefaultSeedB;
-            public static ulong DefaultSeedC;
-            public static ulong DefaultSeedD;
-
             public int Combine<T1>(T1 value1)
             {
                 var v1 = value1?.GetHashCode() ?? 0;
