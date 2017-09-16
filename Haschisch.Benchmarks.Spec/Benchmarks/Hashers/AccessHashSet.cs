@@ -31,8 +31,11 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
-        [Benchmark(Baseline = true)][BenchmarkCategory("hashset", "algo", "prime")]
+        [Benchmark(Baseline = true)][BenchmarkCategory("hashset", "multiply-add", "prime")]
         public HashSet<Large> MultiplyAdd_ByCombiner() => this.RunHashSetBenchmark_ByCombiner<MultiplyAddReorderedCombiner>();
+
+        [Benchmark][BenchmarkCategory("hashset", "multiply-add", "variant")]
+        public HashSet<Large> MultiplyAdd_Naive_ByCombiner() => this.RunHashSetBenchmark_ByCombiner<MultiplyAddCombiner>();
 
         // baseline from PoC from issue
         [Benchmark][BenchmarkCategory("hashset", "murmur-3-32", "prime")]
