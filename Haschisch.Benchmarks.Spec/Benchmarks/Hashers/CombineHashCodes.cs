@@ -57,16 +57,16 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark(Baseline = true)]
-        [BenchmarkCategory("combine", "throughput", "empty", "prime", "i")]
+        [BenchmarkCategory("combine", "throughput", "empty", "prime")]
         public int Empty() => this.combiner.Empty();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "prime")]
         public int MultiplyAddReordered_Custom() => this.combiner.MultiplyAddReordered_Custom();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "variant")]
         public int MultiplyAdd_Custom() => this.combiner.MultiplyAdd_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
         public int Murmur3A_Tannergooding_Custom() => this.combiner.Murmur3A_Tannergooding_Custom();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
@@ -76,6 +76,9 @@ namespace Haschisch.Benchmarks
         public int Murmur3A_TannergoodingWithSeedArg_Custom() => this.combiner.Murmur3A_TannergoodingWithSeedArg_Custom();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        public int Murmur3A_TannergoodingWithSpecialSauce_Custom() => this.combiner.Murmur3A_TannergoodingSpecialSauce_Custom();
+
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "prime")]
         public int Murmur3A_Steps() => this.combiner.Murmur3A_Steps_Custom();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
@@ -93,7 +96,7 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-2-4", "prime")]
         public int HSip24_Combine() => this.combiner.HSip24_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-1-3", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-1-3", "prime")]
         public int Sip13_Combine() => this.combiner.Sip13_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-2-4", "prime")]
@@ -105,19 +108,19 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "variant")]
         public int Marvin32_Block() => this.combiner.Marvin32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "prime")]
         public int XXHash32_Combine() => this.combiner.XXHash32_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "variant")]
         public int XXHash32_Block() => this.combiner.XXHash32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "prime")]
         public int XXHash64_Combine() => this.combiner.XXHash64_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "variant")]
         public int XXHash64_Block() => this.combiner.XXHash64_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "prime")]
         public int SeaHash_Combine() => this.combiner.SeaHash_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "variant")]
@@ -126,7 +129,7 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "spookyv2", "prime")]
         public int SpookyV2_Combine() => this.combiner.SpookyV2_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "prime", "i")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "prime")]
         public int City32_Combine() => this.combiner.City32_Combine();
 
         private sealed class Combiner1 : ICombine
@@ -138,6 +141,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1);
             public int Murmur3A_TannergoodingWithSeedArg_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(Murmur3x8632Hasher.DefaultSeed, v1);
+            public int Murmur3A_TannergoodingSpecialSauce_Custom() => Murmur3A_TG_SpecialSauce_Combiner.Combine(v1);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(v1);
             public int Murmur3A_Combine() => default(Murmur3x8632Hasher.Combiner).Combine(v1);
             public int Murmur3A_Block() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(v1);
@@ -167,6 +171,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2);
             public int Murmur3A_TannergoodingWithSeedArg_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(Murmur3x8632Hasher.DefaultSeed, v1, v2);
+            public int Murmur3A_TannergoodingSpecialSauce_Custom() => Murmur3A_TG_SpecialSauce_Combiner.Combine(v1, v2);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(v1, v2);
             public int Murmur3A_Combine() => default(Murmur3x8632Hasher.Combiner).Combine(v1, v2);
             public int Murmur3A_Block() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(v1, v2);
@@ -196,6 +201,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_TannergoodingWithSeedArg_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(Murmur3x8632Hasher.DefaultSeed, v1, v2, v3, v4);
+            public int Murmur3A_TannergoodingSpecialSauce_Custom() => Murmur3A_TG_SpecialSauce_Combiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_Combine() => default(Murmur3x8632Hasher.Combiner).Combine(v1, v2, v3, v4);
             public int Murmur3A_Block() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(v1, v2, v3, v4);
@@ -225,6 +231,7 @@ namespace Haschisch.Benchmarks
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_TannergoodingWithSeedArg_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(Murmur3x8632Hasher.DefaultSeed, v1, v2, v3, v4, v5, v6, v7, v8);
+            public int Murmur3A_TannergoodingSpecialSauce_Custom() => Murmur3A_TG_SpecialSauce_Combiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_Steps_Custom() => Murmur3AStepsCombiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_Combine() => default(Murmur3x8632Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_Block() => GenericCombiner<Murmur3x8632Hasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
@@ -256,6 +263,7 @@ namespace Haschisch.Benchmarks
             int Murmur3A_Tannergooding_Custom();
             int Murmur3A_TannergoodingWithSeed_Custom();
             int Murmur3A_TannergoodingWithSeedArg_Custom();
+            int Murmur3A_TannergoodingSpecialSauce_Custom();
             int Murmur3A_Steps_Custom();
             int Murmur3A_Combine();
             int Murmur3A_Block();
