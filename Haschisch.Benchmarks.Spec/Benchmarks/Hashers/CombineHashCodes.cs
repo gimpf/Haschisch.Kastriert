@@ -57,85 +57,85 @@ namespace Haschisch.Benchmarks
         }
 
         [Benchmark(Baseline = true)]
-        [BenchmarkCategory("combine", "throughput", "empty", "prime")]
+        [BenchmarkCategory("combine", "throughput", "empty", "prime", "no-seed")]
         public int Empty() => this.combiner.Empty();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "prime", "no-seed")]
         public int MultiplyAddReordered_Custom() => this.combiner.MultiplyAddReordered_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "variant", "no-seed")]
         public int MultiplyAdd_Custom() => this.combiner.MultiplyAdd_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "no-seed")]
         public int Murmur3A_Tannergooding_Custom() => this.combiner.Murmur3A_Tannergooding_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3A_TannergoodingWithSeed_Custom() => this.combiner.Murmur3A_TannergoodingWithSeed_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3A_TannergoodingWithSeedArg_Custom() => this.combiner.Murmur3A_TannergoodingWithSeedArg_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3A_TannergoodingWithSpecialSauce_Custom() => this.combiner.Murmur3A_TannergoodingSpecialSauce_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "prime", "per-ad-seed")]
         public int Murmur3A_Steps() => this.combiner.Murmur3A_Steps_Custom();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3A_Combine() => this.combiner.Murmur3A_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3A_Block() => this.combiner.Murmur3A_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-1-3", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-1-3", "prime", "per-ad-seed")]
         public int HSip13_Combine() => this.combiner.HSip13_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-1-3", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-1-3", "variant", "per-ad-seed")]
         public int HSip13_Block() => this.combiner.HSip13_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-2-4", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "hsip", "hsip-2-4", "prime", "per-ad-seed")]
         public int HSip24_Combine() => this.combiner.HSip24_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-1-3", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-1-3", "prime", "per-ad-seed")]
         public int Sip13_Combine() => this.combiner.Sip13_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-2-4", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sip", "sip-2-4", "prime", "per-ad-seed")]
         public int Sip24_Combine() => this.combiner.Sip24_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "prime", "per-ad-seed")]
         public int Marvin32_Combine() => this.combiner.Marvin32_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "variant", "per-ad-seed")]
         public int Marvin32_Block() => this.combiner.Marvin32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "prime", "per-ad-seed")]
         public int XXHash32_Combine() => this.combiner.XXHash32_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "variant", "per-ad-seed")]
         public int XXHash32_Block() => this.combiner.XXHash32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "prime", "per-ad-seed")]
         public int XXHash64_Combine() => this.combiner.XXHash64_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "variant", "per-ad-seed")]
         public int XXHash64_Block() => this.combiner.XXHash64_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "prime", "per-ad-seed")]
         public int SeaHash_Combine() => this.combiner.SeaHash_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "variant", "no-seed")]
         public int SeaHash_Block() => this.combiner.SeaHash_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "spookyv2", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "spookyv2", "prime", "per-ad-seed")]
         public int SpookyV2_Combine() => this.combiner.SpookyV2_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "prime")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "prime", "per-ad-seed")]
         public int City32_Combine() => this.combiner.City32_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "variant", "no-seed")]
         public int City32_Unseeded_Combine() => this.combiner.City32_Unseeded_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "variant")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "city32", "variant", "no-seed")]
         public int City32_NonUnrolled_Combine() => this.combiner.City32_NonUnrolled_Combine();
 
         private sealed class Combiner1 : ICombine
