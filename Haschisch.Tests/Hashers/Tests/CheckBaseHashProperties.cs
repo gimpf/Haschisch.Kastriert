@@ -20,10 +20,10 @@ namespace Haschisch.Hashers.Tests
             public string Name;
             public IStreamingHasher<int>[] Streaming;
             public IBlockHasher<int>[] Block;
-            public IHashCodeCombiner Combiner;
+            public IHashCodeCombiner[] Combiner;
 
             public static HashAlgorithm Create(
-                string name, IStreamingHasher<int>[] streaming, IBlockHasher<int>[] block, IHashCodeCombiner combiner)
+                string name, IStreamingHasher<int>[] streaming, IBlockHasher<int>[] block, IHashCodeCombiner[] combiner)
             {
                 return new HashAlgorithm
                 {
@@ -45,57 +45,57 @@ namespace Haschisch.Hashers.Tests
                     "marvin32",
                     Stream(default(Marvin32Hasher.Stream)),
                     Block(default(Marvin32Hasher.Block)),
-                    default(Marvin32Hasher.Combiner)),
+                    Combiner(default(Marvin32Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "murmur3-x86-32",
                     Stream(default(Murmur3x8632Hasher.Stream)),
                     Block(default(Murmur3x8632Hasher.Block)),
-                    default(Murmur3x8632Hasher.Combiner)),
+                    Combiner(default(Murmur3x8632Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "xxhash32",
                     Stream(default(XXHash32Hasher.Stream)),
                     Block(default(XXHash32Hasher.Block)),
-                    default(XXHash32Hasher.Combiner)),
+                    Combiner(default(XXHash32Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "xxhash64",
                     Stream(default(XXHash64Hasher.Stream)),
                     Block(default(XXHash64Hasher.Block)),
-                    default(XXHash64Hasher.Combiner)),
+                    Combiner(default(XXHash64Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "SeaHash",
                     Stream(default(SeaHasher.Stream)),
                     Block(default(SeaHasher.Block)),
-                    null), // TODO: only activate after fixing seeding, default(SeaHasher.Combiner)),
+                    Combiner()), // TODO: only activate after fixing seeding, default(SeaHasher.Combiner)),
                 HashAlgorithm.Create(
                     "hsip13",
                     Stream(default(HalfSip13Hasher.Stream)),
                     Block(default(HalfSip13Hasher.Block)),
-                    default(HalfSip13Hasher.Combiner)),
+                    Combiner(default(HalfSip13Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "hsip24",
                     Stream(default(HalfSip24Hasher.Stream)),
                     Block(default(HalfSip24Hasher.Block)),
-                    default(HalfSip24Hasher.Combiner)),
+                    Combiner(default(HalfSip24Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "sip13",
                     Stream(default(Sip13Hasher.Stream)),
                     Block(default(Sip13Hasher.Block)),
-                    default(Sip13Hasher.Combiner)),
+                    Combiner(default(Sip13Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "sip24",
                     Stream(default(Sip24Hasher.Stream)),
                     Block(default(Sip24Hasher.Block)),
-                    default(Sip24Hasher.Combiner)),
+                    Combiner(default(Sip24Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "spookyv2",
                     Stream(default(SpookyV2Hasher.Stream)),
                     Block(default(SpookyV2Hasher.Block)),
-                    default(SpookyV2Hasher.Combiner)),
+                    Combiner(default(SpookyV2Hasher.Combiner))),
                 HashAlgorithm.Create(
                     "city32",
                     Stream(),
                     Block(default(City32Hasher.Block)),
-                    default(City32Hasher.Combiner))
+                    Combiner(default(City32OldHasher.CombinerUnseeded), default(City32OldHasher.CombinerNonUnrolled)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>
@@ -184,9 +184,6 @@ namespace Haschisch.Hashers.Tests
         [TestCaseSource(nameof(Hashers))]
         public void HashCode_WithNullPadding_IsDifferent(IBlockHasher<int> hasher)
         {
-            // Marvin fails this by construction. Nothing we can do here.
-            //if (hasher.GetType() == typeof(Marvin32Hasher.Stream)) { return; }
-
             DoCheck.That((byte[] data) =>
             {
                 if ((data?.Length ?? 0) == 0) { return true; }
@@ -216,7 +213,7 @@ namespace Haschisch.Hashers.Tests
                 var hashCodes =
                     algorithm.Streaming.Select(hasher => (hasher.ToString(), HashItBy1(hasher, data, len))).ToArray()
                     .Concat(algorithm.Block.Select(hasher => (hasher.ToString(), HashItBlockwise(hasher, data, 0, len))))
-                    .Concat(IsCombinable(len) ? new[] { (algorithm.Combiner.ToString(), HashItByCombining(algorithm.Combiner, data, i)) } : Enumerable.Empty<(string, int)>())
+                    .Concat(IsCombinable(len) ? algorithm.Combiner.Select(hasher => (hasher.ToString(), HashItByCombining(hasher, data, i))) : Enumerable.Empty<(string, int)>())
                     .ToArray();
 
                 foreach (var hc in hashCodes.Skip(1))
@@ -401,5 +398,7 @@ namespace Haschisch.Hashers.Tests
         private static IStreamingHasher<int>[] Stream(params IStreamingHasher<int>[] hashers) => hashers;
 
         private static IBlockHasher<int>[] Block(params IBlockHasher<int>[] hashers) => hashers;
+
+        private static IHashCodeCombiner[] Combiner(params IHashCodeCombiner[] hashers) => hashers;
     }
 }

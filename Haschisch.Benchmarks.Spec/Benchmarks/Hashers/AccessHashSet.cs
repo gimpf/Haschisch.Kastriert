@@ -104,6 +104,15 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("hashset", "city32", "prime")]
         public HashSet<Large> City32_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32Hasher.Combiner>();
 
+        [Benchmark][BenchmarkCategory("hashset", "city32", "variant")]
+        public HashSet<Large> City32_Unseeded_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32OldHasher.CombinerUnseeded>();
+
+        [Benchmark][BenchmarkCategory("hashset", "city32", "variant")]
+        public HashSet<Large> City32_NonUnrolled_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32OldHasher.CombinerNonUnrolled>();
+
+        [Benchmark][BenchmarkCategory("hashset", "city32", "variant")]
+        public HashSet<Large> City32_Block() => this.RunHashSetBenchmark_ByBlock<City32Hasher.Block>();
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()
             where T : struct, IHashCodeCombiner =>

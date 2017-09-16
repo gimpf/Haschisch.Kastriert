@@ -65,16 +65,53 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal unsafe static uint Hash_Len4(uint s)
+        {
+            var b = 0u;
+            var c = 9u;
+
+            var v = (sbyte)s;
+            b = (uint)(b * Murmur3x8632Steps.C1 + v);
+            c ^= b;
+
+            v = (sbyte)(s >> 8);
+            b = (uint)(b * Murmur3x8632Steps.C1 + v);
+            c ^= b;
+
+            v = (sbyte)(s >> 16);
+            b = (uint)(b * Murmur3x8632Steps.C1 + v);
+            c ^= b;
+
+            v = (sbyte)(s >> 24);
+            b = (uint)(b * Murmur3x8632Steps.C1 + v);
+            c ^= b;
+
+            var h = Murmur3x8632Steps.MixStep(4, c);
+            h = Murmur3x8632Steps.MixStep(b, h);
+            return Murmur3x8632Steps.FMix32(h);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal unsafe static uint Hash_Len5to12(ref byte s, uint len)
+        {
+            var a0 = Fetch32(ref s, 0);
+            var a1 = Fetch32(ref s, len - 4);
+            var a2 = Fetch32(ref s, (len >> 1) & 4);
+
+            return Hash_Len5to12(a0, a1, a2, len);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal unsafe static uint Hash_Len5to12(uint a0, uint a1, uint a2, uint len)
         {
             var a = len;
             var b = len * 5;
             var c = 9u;
             var d = b;
 
-            a += Fetch32(ref s, 0);
-            b += Fetch32(ref s, len - 4);
-            c += Fetch32(ref s, (len >> 1) & 4);
+            a += a0;
+            b += a1;
+            c += a2;
 
             var h = Murmur3x8632Steps.MixStep(a, d);
             h = Murmur3x8632Steps.MixStep(b, h);
@@ -92,6 +129,12 @@ namespace Haschisch.Hashers
             var e = Fetch32(ref s, 0);
             var f = Fetch32(ref s, len - 4);
 
+            return Hash_Len13to24(a, b, c, d, e, f, len);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal unsafe static uint Hash_Len13to24(uint a, uint b, uint c, uint d, uint e, uint f, uint len)
+        {
             var h = len;
             h = Murmur3x8632Steps.MixStep(a, h);
             h = Murmur3x8632Steps.MixStep(b, h);
@@ -127,17 +170,28 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe void Initialize_Gt24(ref byte s, uint len, out uint h, out uint g, out uint f)
+        public static unsafe void Initialize_Gt24(ref byte s, uint len, out uint h, out uint g, out uint f)
+        {
+            var a0 = Fetch32(ref s, len - 4);
+            var a1 = Fetch32(ref s, len - 8);
+            var a2 = Fetch32(ref s, len - 16); // was this a type in the reference implementation, or
+            var a3 = Fetch32(ref s, len - 12); // is this is super-special-hero-hack actually improving things?
+            var a4 = Fetch32(ref s, len - 20);
+            Initialize_Gt24(a0, a1, a2, a3, a4, len, out h, out g, out f);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe void Initialize_Gt24(uint last4, uint last8, uint last16, uint last12, uint last20, uint len, out uint h, out uint g, out uint f)
         {
             h = len;
             g = Murmur3x8632Steps.C1 * len;
             f = g;
 
-            var a0 = Fetch32(ref s, len - 4);
-            var a1 = Fetch32(ref s, len - 8);
-            var a2 = Fetch32(ref s, len - 16);
-            var a3 = Fetch32(ref s, len - 12);
-            var a4 = Fetch32(ref s, len - 20);
+            var a0 = last4;
+            var a1 = last8;
+            var a2 = last16;
+            var a3 = last12;
+            var a4 = last20;
 
             // this starts with a franken-murmur-3-32...
             a0 = BitOps.RotateRight(a0 * Murmur3x8632Steps.C1, 17) * Murmur3x8632Steps.C2;
@@ -168,7 +222,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe void Update_Gt24(
+        public static unsafe void Update_Gt24(
             ref uint h, ref uint g, ref uint f, uint a0, uint a1, uint a2, uint a3, uint a4)
         {
             // still franken
@@ -204,7 +258,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint Finish(ref uint h, ref uint g, ref uint f)
+        public static uint Finish(ref uint h, ref uint g, ref uint f)
         {
             g = BitOps.RotateRight(g, 11) * Murmur3x8632Steps.C1;
             g = BitOps.RotateRight(g, 17) * Murmur3x8632Steps.C1;
@@ -220,7 +274,7 @@ namespace Haschisch.Hashers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private unsafe static uint Fetch32(ref byte s, uint idx) =>
+        public unsafe static uint Fetch32(ref byte s, uint idx) =>
             Unsafe.As<byte, uint>(ref Unsafe.Add<byte>(ref s, (int)idx));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
