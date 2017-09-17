@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <None Remove="TestVectors\city32.test-vectors" />
+    <None Remove="TestVectors\city64-w-seeds.test-vectors" />
     <None Remove="TestVectors\city64.test-vectors" />
     <None Remove="TestVectors\hsip13.test-vectors" />
     <None Remove="TestVectors\hsip24.test-vectors" />
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="TestVectors\city32.test-vectors" />
+    <EmbeddedResource Include="TestVectors\city64-w-seeds.test-vectors" />
     <EmbeddedResource Include="TestVectors\city64.test-vectors" />
     <EmbeddedResource Include="TestVectors\hsip13.test-vectors" />
     <EmbeddedResource Include="TestVectors\hsip24.test-vectors" />

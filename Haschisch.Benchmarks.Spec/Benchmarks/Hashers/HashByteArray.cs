@@ -124,5 +124,8 @@ namespace Haschisch.Benchmarks
 
         [Benchmark][BenchmarkCategory("array", "throughput", "city", "city64", "prime", "no-seed")]
         public int City64_Block() => HashByteArrayUtil.HashWithBlock<City64Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "city", "city64-w-seeds", "prime", "per-ad-seed")]
+        public int City64WithSeeds_Block() => HashByteArrayUtil.HashWithBlock<City64WithSeedsHasher.Block>(this.data);
     }
 }

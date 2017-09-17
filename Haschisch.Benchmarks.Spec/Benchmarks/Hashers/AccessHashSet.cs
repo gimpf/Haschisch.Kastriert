@@ -119,6 +119,9 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("hashset", "city", "city64", "variant", "no-seed")]
         public HashSet<Large> City64_Block() => this.RunHashSetBenchmark_ByBlock<City64Hasher.Block>();
 
+        [Benchmark][BenchmarkCategory("hashset", "city", "city64-w-seeds", "prime", "per-ad-seed")]
+        public HashSet<Large> City64WithSeeds_Combiner() => this.RunHashSetBenchmark_ByCombiner<City64WithSeedsHasher.Combiner>();
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()
             where T : struct, IHashCodeCombiner =>

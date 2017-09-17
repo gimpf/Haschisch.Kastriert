@@ -100,7 +100,12 @@ namespace Haschisch.Hashers.Tests
                     "city64",
                     Stream(),
                     Block(default(City64Hasher.Block)),
-                    Combiner(default(City64Hasher.Combiner)))
+                    Combiner(default(City64Hasher.Combiner))),
+                HashAlgorithm.Create(
+                    "city64-w-seeds",
+                    Stream(),
+                    Block(default(City64WithSeedsHasher.Block)),
+                    Combiner(default(City64WithSeedsHasher.Combiner)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>

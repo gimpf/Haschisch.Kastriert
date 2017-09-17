@@ -404,6 +404,17 @@ namespace Haschisch.Tests.Hashers.Tests
             TestCity64(testdata[kTestSize - 1], 0, kDataSize);
         }
 
+        [Test]
+        public static void Hash_City64WithSeeds_HashBytes_ReturnsExpectedHashCode()
+        {
+            for (var i = 0; i < kTestSize - 1; i++)
+            {
+                TestCity64WithSeeds(testdata[i], i * i, i);
+            }
+
+            TestCity64WithSeeds(testdata[kTestSize - 1], 0, kDataSize);
+        }
+
         private static void TestCity32(ExpectedResult expected, int offset, int len)
         {
             Assert.AreEqual(
@@ -420,6 +431,16 @@ namespace Haschisch.Tests.Hashers.Tests
                 expected.City64,
                 default(City64Hasher.Block).Hash(ref data[offset], len),
                 "City64 failed for length {1} at offset {0}",
+                offset,
+                len);
+        }
+
+        private static void TestCity64WithSeeds(ExpectedResult expected, int offset, int len)
+        {
+            Assert.AreEqual(
+                expected.City64WithSeeds,
+                City64WithSeedsHasher.Block.Hash(kSeed0, kSeed1, ref data[offset], len),
+                "City64_w/Seeds failed for length {1} at offset {0}",
                 offset,
                 len);
         }

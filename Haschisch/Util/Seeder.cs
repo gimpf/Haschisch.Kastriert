@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace Haschisch.Util
 {
     internal static class Seeder
     {
+        public static T GetNewSeed<T>() where T : struct
+        {
+            var size = Unsafe.SizeOf<T>();
+            var bytes = GetBytes(size);
+            var result = default(T);
+            Unsafe.CopyBlock(ref Unsafe.As<T, byte>(ref result), ref bytes[0], (uint)size);
+            return result;
+        }
+
         public static void GetNewSeed(out (ulong, ulong) result)
         {
             var key = GetBytes(sizeof(ulong) * 2);

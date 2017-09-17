@@ -141,6 +141,9 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city64", "prime", "no-seed")]
         public int City64_Combine() => this.combiner.City64_Combine();
 
+        [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city64-w-seeds", "prime", "per-ad-seed")]
+        public int City64WithSeeds_Combine() => this.combiner.City64WithSeeds_Combine();
+
         private sealed class Combiner1 : ICombine
         {
             public int Empty() => 0;
@@ -172,6 +175,7 @@ namespace Haschisch.Benchmarks
             public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1);
             public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1);
+            public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1);
         }
 
         private sealed class Combiner2 : ICombine
@@ -205,6 +209,7 @@ namespace Haschisch.Benchmarks
             public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2);
             public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2);
+            public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2);
         }
 
         private sealed class Combiner4 : ICombine
@@ -238,6 +243,7 @@ namespace Haschisch.Benchmarks
             public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4);
             public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2, v3, v4);
+            public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2, v3, v4);
         }
 
         private sealed class Combiner8 : ICombine
@@ -271,6 +277,7 @@ namespace Haschisch.Benchmarks
             public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
         }
 
         private interface ICombine
@@ -306,6 +313,7 @@ namespace Haschisch.Benchmarks
             int City32_Unseeded_Combine();
             int City32_NonUnrolled_Combine();
             int City64_Combine();
+            int City64WithSeeds_Combine();
         }
     }
 }

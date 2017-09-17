@@ -9,6 +9,22 @@ namespace Haschisch.Hashers
     public static class City64Steps
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static ulong HashWithSeed(ref byte s, uint len, ulong seed) =>
+            HashWithSeeds(ref s, len, CS.K2, seed);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static ulong HashWithSeeds(ref byte s, uint len, ulong seed0, ulong seed1) =>
+            Hash_Len16(Hash(ref s, len) - seed0, seed1);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static ulong MixSeed(ulong hash, ulong seed) =>
+            Hash_Len16(hash - CS.K2, seed);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static ulong MixSeeds(ulong hash, ulong seed0, ulong seed1) =>
+            Hash_Len16(hash - seed0, seed1);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static ulong Hash(ref byte s, uint len)
         {
             if (len <= 32)
