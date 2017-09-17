@@ -109,11 +109,21 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal unsafe static ulong Hash_Len17to32(ref byte s, uint len)
         {
-            ulong mul = CS.K2 + len * 2;
-            ulong a = UBO.ToUInt64(ref s, 0) * CS.K1;
+            ulong a = UBO.ToUInt64(ref s, 0);
             ulong b = UBO.ToUInt64(ref s, 8);
-            ulong c = UBO.ToUInt64(ref s, len - 8) * mul;
-            ulong d = UBO.ToUInt64(ref s, len - 16) * CS.K2;
+            ulong c = UBO.ToUInt64(ref s, len - 8);
+            ulong d = UBO.ToUInt64(ref s, len - 16);
+
+            return Hash_Len17to32(a, b, c, d, len);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal unsafe static ulong Hash_Len17to32(ulong a, ulong b, ulong c, ulong d, uint len)
+        {
+            ulong mul = CS.K2 + len * 2;
+            a = a * CS.K1;
+            c = c * mul;
+            d = d * CS.K2;
             return Hash_Len16(
                 BitOps.RotateRight(a + b, 43) + BitOps.RotateRight(c, 30) + d,
                 a + BitOps.RotateRight(b + CS.K2, 18) + c,
