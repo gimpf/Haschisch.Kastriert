@@ -1,5 +1,7 @@
 ﻿// Original test-vectors from https://github.com/google/cityhash/blob/master/src/city-test.cc
 
+using System;
+using System.Collections.Generic;
 using Haschisch.Hashers;
 using NUnit.Framework;
 
@@ -385,31 +387,41 @@ namespace Haschisch.Tests.Hashers.Tests
         {
             for (var i = 0; i < kTestSize - 1; i++)
             {
-                TestDataSlice(testdata[i], i * i, i);
+                TestCity32(testdata[i], i * i, i);
             }
 
-            TestDataSlice(testdata[kTestSize - 1], 0, kDataSize);
+            TestCity32(testdata[kTestSize - 1], 0, kDataSize);
         }
 
-        private static void TestDataSlice(ExpectedResult expected, int offset, int len)
+        [Test]
+        public static void Hash_City64_HashBytes_ReturnsExpectedHashCode()
         {
-            //const uint128 u = CityHash128(data + offset, len);
-            //const uint128 v = CityHash128WithSeed(data + offset, len, kSeed128);
-            //Check(expected[0], CityHash64(data + offset, len));
+            for (var i = 0; i < kTestSize - 1; i++)
+            {
+                TestCity64(testdata[i], i * i, i);
+            }
 
+            TestCity64(testdata[kTestSize - 1], 0, kDataSize);
+        }
+
+        private static void TestCity32(ExpectedResult expected, int offset, int len)
+        {
             Assert.AreEqual(
                 expected.City32,
                 (uint)default(City32Hasher.Block).Hash(ref data[offset], len),
-                "City32 failed for offset {0}, length {1}",
+                "City32 failed for length {1} at offset {0}",
                 offset,
                 len);
+        }
 
-            //Check(expected[1], CityHash64WithSeed(data + offset, len, kSeed0));
-            //Check(expected[2], CityHash64WithSeeds(data + offset, len, kSeed0, kSeed1));
-            //Check(expected[3], Uint128Low64(u));
-            //Check(expected[4], Uint128High64(u));
-            //Check(expected[5], Uint128Low64(v));
-            //Check(expected[6], Uint128High64(v));
+        private static void TestCity64(ExpectedResult expected, int offset, int len)
+        {
+            Assert.AreEqual(
+                expected.City64,
+                default(City64Hasher.Block).Hash(ref data[offset], len),
+                "City64 failed for length {1} at offset {0}",
+                offset,
+                len);
         }
     }
 }

@@ -24,5 +24,9 @@ namespace Haschisch.Util
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong RotateLeft(ulong value, int steps) =>
             (value << steps) | (value >> ((sizeof(ulong) * 8) - steps));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong RotateRight(ulong value, int steps) =>
+            (value >> steps) | (value << ((sizeof(ulong) * 8) - steps));
     }
 }

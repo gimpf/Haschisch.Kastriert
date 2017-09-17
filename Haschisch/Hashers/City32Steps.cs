@@ -1,14 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using Haschisch.Util;
 
+using UBO = Haschisch.Util.UnsafeByteOps;
+using CS = Haschisch.Hashers.CitySteps;
+
 namespace Haschisch.Hashers
 {
     public static class City32Steps
     {
-        private const ulong K0 = 0xc3a5c85c97cb3127UL;
-        private const ulong K1 = 0xb492b66fbe98f273UL;
-        private const ulong K2 = 0x9ae16a3b2f90404fUL;
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static uint Hash(ref byte s, uint len)
         {
@@ -94,9 +93,9 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal unsafe static uint Hash_Len5to12(ref byte s, uint len)
         {
-            var a0 = Fetch32(ref s, 0);
-            var a1 = Fetch32(ref s, len - 4);
-            var a2 = Fetch32(ref s, (len >> 1) & 4);
+            var a0 = UBO.ToUInt32(ref s, 0);
+            var a1 = UBO.ToUInt32(ref s, len - 4);
+            var a2 = UBO.ToUInt32(ref s, (len >> 1) & 4);
 
             return Hash_Len5to12(a0, a1, a2, len);
         }
@@ -122,12 +121,12 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal unsafe static uint Hash_Len13to24(ref byte s, uint len)
         {
-            var a = Fetch32(ref s, (len >> 1) - 4);
-            var b = Fetch32(ref s, 4);
-            var c = Fetch32(ref s, len - 8);
-            var d = Fetch32(ref s, len >> 1);
-            var e = Fetch32(ref s, 0);
-            var f = Fetch32(ref s, len - 4);
+            var a = UBO.ToUInt32(ref s, (len >> 1) - 4);
+            var b = UBO.ToUInt32(ref s, 4);
+            var c = UBO.ToUInt32(ref s, len - 8);
+            var d = UBO.ToUInt32(ref s, len >> 1);
+            var e = UBO.ToUInt32(ref s, 0);
+            var f = UBO.ToUInt32(ref s, len - 4);
 
             return Hash_Len13to24(a, b, c, d, e, f, len);
         }
@@ -155,11 +154,11 @@ namespace Haschisch.Hashers
             uint offset = 0;
             do
             {
-                var a0 = Fetch32(ref s, offset + 0);
-                var a1 = Fetch32(ref s, offset + 4);
-                var a2 = Fetch32(ref s, offset + 8);
-                var a3 = Fetch32(ref s, offset + 12);
-                var a4 = Fetch32(ref s, offset + 16);
+                var a0 = UBO.ToUInt32(ref s, offset + 0);
+                var a1 = UBO.ToUInt32(ref s, offset + 4);
+                var a2 = UBO.ToUInt32(ref s, offset + 8);
+                var a3 = UBO.ToUInt32(ref s, offset + 12);
+                var a4 = UBO.ToUInt32(ref s, offset + 16);
 
                 Update_Gt24(ref h, ref g, ref f, a0, a1, a2, a3, a4);
 
@@ -172,11 +171,11 @@ namespace Haschisch.Hashers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void Initialize_Gt24(ref byte s, uint len, out uint h, out uint g, out uint f)
         {
-            var a0 = Fetch32(ref s, len - 4);
-            var a1 = Fetch32(ref s, len - 8);
-            var a2 = Fetch32(ref s, len - 16); // was this a type in the reference implementation, or
-            var a3 = Fetch32(ref s, len - 12); // is this is super-special-hero-hack actually improving things?
-            var a4 = Fetch32(ref s, len - 20);
+            var a0 = UBO.ToUInt32(ref s, len - 4);
+            var a1 = UBO.ToUInt32(ref s, len - 8);
+            var a2 = UBO.ToUInt32(ref s, len - 16); // was this a type in the reference implementation, or
+            var a3 = UBO.ToUInt32(ref s, len - 12); // is this is super-special-hero-hack actually improving things?
+            var a4 = UBO.ToUInt32(ref s, len - 20);
             Initialize_Gt24(a0, a1, a2, a3, a4, len, out h, out g, out f);
         }
 
@@ -254,7 +253,7 @@ namespace Haschisch.Hashers
 
             f += a0;
 
-            Rotate(ref f, ref h, ref g);
+            CS.Permute3(ref f, ref h, ref g);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -271,19 +270,6 @@ namespace Haschisch.Hashers
             h = h * 5 + 0xe6546b64;
             h = BitOps.RotateRight(h, 17) * Murmur3x8632Steps.C1;
             return h;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe static uint Fetch32(ref byte s, uint idx) =>
-            Unsafe.As<byte, uint>(ref Unsafe.Add<byte>(ref s, (int)idx));
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private unsafe static void Rotate(ref uint a, ref uint b, ref uint c)
-        {
-            var t = c;
-            c = b;
-            b = a;
-            a = t;
         }
     }
 }

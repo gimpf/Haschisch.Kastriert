@@ -22,14 +22,14 @@ namespace Haschisch.CheckUtils
 
             GenerateAndReportVectors(CheckBaseHashProperties.Algorithms, basePath);
 
-            var inconclusive = false;
+            var inconclusive = new List<string>();
             foreach (var fn in Directory.GetFiles(basePath, "*.test-vectors"))
             {
                 var baseName = Path.GetFileName(fn);
                 var stream = typeof(CheckApprovedTestVectors).Assembly.GetManifestResourceStream("Haschisch.Tests.TestVectors." + baseName);
                 if (stream == null)
                 {
-                    inconclusive = true;
+                    inconclusive.Add(baseName);
                     continue;
                 }
 
@@ -41,7 +41,7 @@ namespace Haschisch.CheckUtils
                 }
             }
 
-            if (inconclusive) { Assert.Inconclusive("At least one hasher did not have test-vectors."); }
+            if (inconclusive.Count > 0) { Assert.Inconclusive("Following hashers did not have test-vectors: {0}", string.Join(", ", inconclusive)); }
         }
 
         public static void GenerateAndReportVectors(IEnumerable<CheckBaseHashProperties.HashAlgorithm> algorithms, string basePath)

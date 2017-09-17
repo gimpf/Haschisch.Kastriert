@@ -95,7 +95,12 @@ namespace Haschisch.Hashers.Tests
                     "city32",
                     Stream(),
                     Block(default(City32Hasher.Block)),
-                    Combiner(default(City32OldHasher.CombinerUnseeded), default(City32OldHasher.CombinerNonUnrolled)))
+                    Combiner(default(City32OldHasher.CombinerUnseeded), default(City32OldHasher.CombinerNonUnrolled))),
+                HashAlgorithm.Create(
+                    "city64",
+                    Stream(),
+                    Block(default(City64Hasher.Block)),
+                    Combiner(default(City64Hasher.Combiner)))
             };
 
         public static IEnumerable<IEqualityComparer<IHashable>> EqualityComparers =>

@@ -119,7 +119,10 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("array", "throughput", "spookyv2", "variant", "per-ad-seed")]
         public int SpookyV2_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<SpookyV2Hasher.Stream>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "city32", "prime", "no-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "city", "city32", "prime", "no-seed")]
         public int City32_Block() => HashByteArrayUtil.HashWithBlock<City32Hasher.Block>(this.data);
+
+        [Benchmark][BenchmarkCategory("array", "throughput", "city", "city64", "prime", "no-seed")]
+        public int City64_Block() => HashByteArrayUtil.HashWithBlock<City64Hasher.Block>(this.data);
     }
 }

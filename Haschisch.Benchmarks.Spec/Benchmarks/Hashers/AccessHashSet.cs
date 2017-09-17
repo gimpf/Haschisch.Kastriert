@@ -101,17 +101,23 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("hashset", "spookyv2", "prime", "per-ad-seed")]
         public HashSet<Large> SpookyV2_Combiner() => this.RunHashSetBenchmark_ByCombiner<SpookyV2Hasher.Combiner>();
 
-        [Benchmark][BenchmarkCategory("hashset", "city32", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "city", "city32", "prime", "per-ad-seed")]
         public HashSet<Large> City32_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32Hasher.Combiner>();
 
-        [Benchmark][BenchmarkCategory("hashset", "city32", "variant", "no-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "city", "city32", "variant", "no-seed")]
         public HashSet<Large> City32_Unseeded_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32OldHasher.CombinerUnseeded>();
 
-        [Benchmark][BenchmarkCategory("hashset", "city32", "variant", "no-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "city", "city32", "variant", "no-seed")]
         public HashSet<Large> City32_NonUnrolled_Combiner() => this.RunHashSetBenchmark_ByCombiner<City32OldHasher.CombinerNonUnrolled>();
 
-        [Benchmark][BenchmarkCategory("hashset", "city32", "variant", "no-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "city", "city32", "variant", "no-seed")]
         public HashSet<Large> City32_Block() => this.RunHashSetBenchmark_ByBlock<City32Hasher.Block>();
+
+        [Benchmark][BenchmarkCategory("hashset", "city", "city64", "prime", "no-seed")]
+        public HashSet<Large> City64_Combiner() => this.RunHashSetBenchmark_ByCombiner<City64Hasher.Combiner>();
+
+        [Benchmark][BenchmarkCategory("hashset", "city", "city64", "variant", "no-seed")]
+        public HashSet<Large> City64_Block() => this.RunHashSetBenchmark_ByBlock<City64Hasher.Block>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HashSet<Large> RunHashSetBenchmark_ByCombiner<T>()

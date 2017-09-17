@@ -84,5 +84,13 @@ namespace Haschisch.Util
                     return 0;
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static uint ToUInt32(ref byte s, uint idx) =>
+            Unsafe.As<byte, uint>(ref Unsafe.Add<byte>(ref s, (int)idx));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static ulong ToUInt64(ref byte s, uint idx) =>
+            Unsafe.As<byte, ulong>(ref Unsafe.Add<byte>(ref s, (int)idx));
     }
 }
