@@ -19,6 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Haschisch.Benchmarks.Net47\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.10.9" />
     <PackageReference Include="BenchmarkDotNet.Core" Version="0.10.9" />
   </ItemGroup>
