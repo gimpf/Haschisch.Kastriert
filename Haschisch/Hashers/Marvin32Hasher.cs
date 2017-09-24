@@ -208,6 +208,17 @@ namespace Haschisch.Hashers
                 return (int)((uint)(h >> 32) ^ (uint)h);
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+                Marvin32Steps.Initialize(DefaultSeed, out var p0, out var p1);
+                Marvin32Steps.Update(ref p0, ref p1, x1 | ((ulong)x2 << 32));
+                var h = Marvin32Steps.Finish(ref p0, ref p1, x3, sizeof(uint));
+                return (int)((uint)(h >> 32) ^ (uint)h);
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x1 = value1?.GetHashCode() ?? 0;

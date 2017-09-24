@@ -37,7 +37,7 @@ namespace Haschisch.CheckUtils
                 {
                     var stored = reader.ReadToEnd();
                     var current = File.ReadAllText(fn);
-                    Assert.AreEqual(stored, current);
+                    Assert.AreEqual(stored, current, "Hash algorithm {0} failed.", baseName);
                 }
             }
 

@@ -51,6 +51,23 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+
+                var a = v1;
+                var b = v1;
+                var c = v2;
+                var d = v2;
+                var e = Seed;
+                var f = v3;
+
+                return (int)City32Steps.Hash_Len13to24(a, b, c, d, e, f, 4 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var v1 = (uint)(value1?.GetHashCode() ?? 0);

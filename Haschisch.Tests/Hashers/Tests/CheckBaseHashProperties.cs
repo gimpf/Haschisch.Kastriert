@@ -233,7 +233,7 @@ namespace Haschisch.Hashers.Tests
             }
 
             bool IsCombinable(int length) =>
-                algorithm.Combiner != null && (length == 4 || length == 8 || length == 16 || length == 32);
+                algorithm.Combiner != null && (length == 4 || length == 8 || length == 12 || length == 16 || length == 32);
         }
 
         [Test]
@@ -288,6 +288,11 @@ namespace Haschisch.Hashers.Tests
                     return combiner.Combine(
                         BitConverter.ToInt32(data, 0),
                         BitConverter.ToInt32(data, 4));
+                case 12:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0),
+                        BitConverter.ToInt32(data, 4),
+                        BitConverter.ToInt32(data, 8));
                 case 16:
                     return combiner.Combine(
                         BitConverter.ToInt32(data, 0),

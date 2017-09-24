@@ -32,6 +32,22 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+        {
+            unchecked
+            {
+                var h1 = value1?.GetHashCode() ?? 0;
+                var h2 = value2?.GetHashCode() ?? 0;
+                var h3 = value3?.GetHashCode() ?? 0;
+
+                int hash = 17;
+                hash = hash * 23 + h1;
+                hash = hash * 23 + h2;
+                hash = hash * 23 + h3;
+                return hash;
+            }
+        }
+
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
         {
             unchecked
@@ -102,6 +118,9 @@ namespace Haschisch.Benchmarks
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int IHashCodeCombiner.Combine<T1, T2>(T1 x1, T2 x2) => Combine(x1, x2);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        int IHashCodeCombiner.Combine<T1, T2, T3>(T1 x1, T2 x2, T3 x3) => Combine(x1, x2, x3);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int IHashCodeCombiner.Combine<T1, T2, T3, T4>(T1 x1, T2 x2, T3 x3, T4 x4) => Combine(x1, x2, x3, x4);

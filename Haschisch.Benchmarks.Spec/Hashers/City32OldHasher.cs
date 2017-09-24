@@ -23,6 +23,16 @@ namespace Haschisch.Hashers
                 return (int)City32Steps.Hash_Len5to12(ref Unsafe.As<PackedList<int, int>, byte>(ref x), 2 * sizeof(int));
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x = new PackedList<int, int, int>(
+                    value1?.GetHashCode() ?? 0,
+                    value2?.GetHashCode() ?? 0,
+                    value3?.GetHashCode() ?? 0);
+
+                return (int)City32Steps.Hash_Len5to12(ref Unsafe.As<PackedList<int, int, int>, byte>(ref x), 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x = new PackedList<int, int, int, int>(
@@ -86,6 +96,15 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+
+                return (int)City32Steps.Hash_Len5to12(v1, v3, v2, 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var v1 = (uint)(value1?.GetHashCode() ?? 0);

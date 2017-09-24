@@ -376,6 +376,19 @@ namespace Haschisch.Hashers
                     2 * sizeof(int)).Item1;
             }
 
+            public int Combine<T1, T2, T3>(T1 x1, T2 x2, T3 x3)
+            {
+                var h0 = (uint)(x1?.GetHashCode() ?? 0);
+                var h1 = (uint)(x2?.GetHashCode() ?? 0);
+                var h2 = (uint)(x3?.GetHashCode() ?? 0);
+
+                SpookyV2Steps.Short.Initialize(DefaultSeed, out var s0, out var s1, out var s2, out var s3);
+                return (int)SpookyV2Steps.Short.Finish(
+                    ref s0, ref s1, ref s2, ref s3,
+                    (uint)h0 | (ulong)h1 << 32, (uint)h2, 0, 0,
+                    3 * sizeof(int)).Item1;
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 x1, T2 x2, T3 x3, T4 x4)
             {
                 var h0 = x1?.GetHashCode() ?? 0;

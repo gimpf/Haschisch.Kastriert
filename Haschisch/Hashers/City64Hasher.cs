@@ -38,6 +38,9 @@ namespace Haschisch.Hashers
             public int Combine<T1, T2>(T1 value1, T2 value2) =>
                 (int)CombineRaw(value1, value2);
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3) =>
+                (int)CombineRaw(value1, value2, value3);
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4) =>
                 (int)CombineRaw(value1, value2, value3, value4);
 
@@ -64,6 +67,19 @@ namespace Haschisch.Hashers
                 var a = (ulong)x2 << 32 | x1;
 
                 return City64Steps.Hash_Len8to16(a, a, 2 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            internal static ulong CombineRaw<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+
+                var a = (ulong)x2 << 32 | x1;
+                var b = (ulong)x3 << 32 | x2;
+
+                return City64Steps.Hash_Len8to16(a, b, 3 * sizeof(int));
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

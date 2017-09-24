@@ -77,6 +77,12 @@ namespace Haschisch.Hashers
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var h = City64Hasher.Combiner.CombineRaw(value1, value2, value3);
+                return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1, value2, value3, value4);

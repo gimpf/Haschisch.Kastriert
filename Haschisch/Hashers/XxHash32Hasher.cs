@@ -236,6 +236,18 @@ namespace Haschisch.Hashers
                 return (int)XXHash32Steps.Short.Finish(ref state);
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                XXHash32Steps.Short.Initialize(DefaultSeed + XXHash32Steps.Prime32n5, 3 * sizeof(int), out var state);
+                XXHash32Steps.Short.MixFinalInt(ref state, (uint)x1);
+                XXHash32Steps.Short.MixFinalInt(ref state, (uint)x2);
+                XXHash32Steps.Short.MixFinalInt(ref state, (uint)x3);
+                return (int)XXHash32Steps.Short.Finish(ref state);
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x1 = value1?.GetHashCode() ?? 0;

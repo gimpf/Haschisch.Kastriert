@@ -178,6 +178,18 @@ namespace Haschisch.Hashers
                 return (int)Murmur3x8632Steps.FinishWithoutPartial(state, 2 * sizeof(int));
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+                Murmur3x8632Steps.Initialize(DefaultSeed, out var state);
+                state = Murmur3x8632Steps.MixStep(v1, state);
+                state = Murmur3x8632Steps.MixStep(v2, state);
+                state = Murmur3x8632Steps.MixStep(v3, state);
+                return (int)Murmur3x8632Steps.FinishWithoutPartial(state, 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var v1 = value1?.GetHashCode() ?? 0;

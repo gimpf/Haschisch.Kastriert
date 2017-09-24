@@ -215,6 +215,20 @@ namespace Haschisch.Hashers
                 return (int)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, 2 * sizeof(int));
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+                SeaHashSteps.Initialize(out var a, out var b, out var c, out var d);
+                SeaHashSteps.MixFinalPartialStep(
+                    ref a,
+                    ref b,
+                    v1 | ((ulong)v2 << 32),
+                    v3);
+                return (int)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var v1 = value1?.GetHashCode() ?? 0;

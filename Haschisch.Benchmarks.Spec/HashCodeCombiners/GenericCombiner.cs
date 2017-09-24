@@ -26,6 +26,18 @@ namespace Haschisch.Benchmarks
                 2 * sizeof(int));
         }
 
+        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+        {
+            var h = new PackedList<int, int, int>(
+                value1?.GetHashCode() ?? 0,
+                value2?.GetHashCode() ?? 0,
+                value3?.GetHashCode() ?? 0);
+
+            return default(THasher).Hash(
+                ref Unsafe.As<PackedList<int, int, int>, byte>(ref h),
+                3 * sizeof(int));
+        }
+
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
         {
             var h = new PackedList<int, int, int, int>(

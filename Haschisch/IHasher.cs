@@ -58,6 +58,8 @@
 
         int Combine<T1, T2>(T1 x1, T2 x2);
 
+        int Combine<T1, T2, T3>(T1 x1, T2 x2, T3 x3);
+
         int Combine<T1, T2, T3, T4>(T1 x1, T2 x2, T3 x3, T4 x4);
 
         int Combine<T1, T2, T3, T4, T5>(T1 x1, T2 x2, T3 x3, T4 x4, T5 x5);

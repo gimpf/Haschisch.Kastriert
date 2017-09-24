@@ -154,6 +154,18 @@ namespace Haschisch.Hashers
                 return HalfSip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 2 * sizeof(int));
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+                HalfSip24Steps.Initialize(DefaultKey, out var v0, out var v1, out var v2, out var v3);
+                HalfSip24Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, x1);
+                HalfSip24Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, x2);
+                HalfSip24Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, x3);
+                return HalfSip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x1 = value1?.GetHashCode() ?? 0;

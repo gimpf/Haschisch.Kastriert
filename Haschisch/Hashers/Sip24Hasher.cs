@@ -165,6 +165,16 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 2 * sizeof(int));
             }
 
+            public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+                Sip24Steps.Initialize(DefaultSeed, out var v0, out var v1, out var v2, out var v3);
+                Sip24Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, x1 | (ulong)x2 << 32);
+                return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, x3, 3 * sizeof(int));
+            }
+
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x1 = value1?.GetHashCode() ?? 0;
