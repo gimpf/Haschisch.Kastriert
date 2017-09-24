@@ -20,10 +20,10 @@ namespace Haschisch.Benchmarks
 
             if (bytes != 0)
             {
-                const double MiBFactor = 1024;
+                const double MiBFactor = 1024 * 1024;
                 var nanoSeconds = summary[benchmark].ResultStatistics.Mean;
-                var throughputInGiBps = (bytes / nanoSeconds);
-                return string.Format(CultureInfo.InvariantCulture, "{0:N0} MiB/s", throughputInGiBps * MiBFactor);
+                var throughputInBps = 1_000_000_000 * (bytes / nanoSeconds);
+                return string.Format(CultureInfo.InvariantCulture, "{0:N0} MiB/s", throughputInBps / MiBFactor);
             }
             else
             {
