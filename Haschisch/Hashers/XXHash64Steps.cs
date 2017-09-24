@@ -109,7 +109,7 @@ namespace Haschisch.Hashers
                     remainder = x0;
                 }
 
-                if ((remaining % sizeof(ulong)) >= sizeof(uint))
+                if ((remaining & (sizeof(ulong) - 1)) >= sizeof(uint))
                 {
                     h = MixFinalInt(h, (uint)remainder);
                     remainder = remainder >> 32;
