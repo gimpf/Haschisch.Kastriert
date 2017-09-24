@@ -8,21 +8,20 @@ namespace Haschisch.Benchmarks
 {
     public class AccessHashSet
     {
+        private System.Random rand;
         private Large[] data;
 
-        [Params(10)]
-        public int DataSize { get; set; }
-
-        [Params(100)]
+        [Params(30, 10_000)]
         public int ItemCount { get; set; }
 
-        [Params(10_000)]
+        [Params(30, 100_000)]
         public int LookupCount { get; set; }
 
         [GlobalSetup]
         public void InitializeData()
         {
-            this.data = Data.Generate.LargeItems(this.DataSize, this.ItemCount, true);
+            this.rand = new System.Random(42);
+            this.data = Data.Generate.LargeItems((int)(System.Math.Log10(this.ItemCount)), this.ItemCount, true);
         }
 
         [GlobalCleanup]
@@ -155,10 +154,9 @@ namespace Haschisch.Benchmarks
                 set.Add(this.data[i]);
             }
 
-            var idx = 0;
             for (var i = 0; i < this.LookupCount; i++)
             {
-                var item = this.data[idx++ % this.data.Length];
+                var item = this.data[this.rand.Next(this.data.Length)];
                 if (!set.Contains(item))
                 {
                     misCnt++;
