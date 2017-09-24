@@ -53,6 +53,13 @@ namespace Haschisch.Benchmarks
             return FinalizeValue(combinedValue, sizeof(int) * 2);
         }
 
+        public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
+        {
+            var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
+            combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 3);
+        }
+
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
         {
             var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
@@ -68,6 +75,29 @@ namespace Haschisch.Benchmarks
             combinedValue = CombineValue(value4?.GetHashCode() ?? 0, combinedValue);
             combinedValue = CombineValue(value5?.GetHashCode() ?? 0, combinedValue);
             return FinalizeValue(combinedValue, sizeof(int) * 5);
+        }
+
+        public static int Combine<T1, T2, T3, T4, T5, T6>(
+            T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+        {
+            var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
+            combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value4?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value5?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value6?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 6);
+        }
+
+        public static int Combine<T1, T2, T3, T4, T5, T6, T7>(
+            T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+        {
+            var combinedValue = CombineValue(value2?.GetHashCode() ?? 0, value1?.GetHashCode() ?? 0);
+            combinedValue = CombineValue(value3?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value4?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value5?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value6?.GetHashCode() ?? 0, combinedValue);
+            combinedValue = CombineValue(value7?.GetHashCode() ?? 0, combinedValue);
+            return FinalizeValue(combinedValue, sizeof(int) * 7);
         }
 
         public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
