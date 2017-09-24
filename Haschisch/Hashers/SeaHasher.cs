@@ -268,6 +268,51 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var v1 = value1?.GetHashCode() ?? 0;
+                var v2 = value2?.GetHashCode() ?? 0;
+                var v3 = value3?.GetHashCode() ?? 0;
+                var v4 = value4?.GetHashCode() ?? 0;
+                var v5 = value5?.GetHashCode() ?? 0;
+                var v6 = value6?.GetHashCode() ?? 0;
+                SeaHashSteps.Initialize(out var a, out var b, out var c, out var d);
+                SeaHashSteps.MixFinalPartialStep(
+                    ref a,
+                    ref b,
+                    ref c,
+                    (uint)v1 | ((ulong)v2 << 32),
+                    (uint)v3 | ((ulong)v4 << 32),
+                    (uint)v5 | ((ulong)v6 << 32));
+                return (int)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var v1 = value1?.GetHashCode() ?? 0;
+                var v2 = value2?.GetHashCode() ?? 0;
+                var v3 = value3?.GetHashCode() ?? 0;
+                var v4 = value4?.GetHashCode() ?? 0;
+                var v5 = value5?.GetHashCode() ?? 0;
+                var v6 = value6?.GetHashCode() ?? 0;
+                var v7 = value7?.GetHashCode() ?? 0;
+                SeaHashSteps.Initialize(out var a, out var b, out var c, out var d);
+                SeaHashSteps.MixStep(
+                    ref a,
+                    ref b,
+                    ref c,
+                    ref d,
+                    (uint)v1 | ((ulong)v2 << 32),
+                    (uint)v3 | ((ulong)v4 << 32),
+                    (uint)v5 | ((ulong)v6 << 32),
+                    (uint)v7);
+                return (int)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, 7 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {

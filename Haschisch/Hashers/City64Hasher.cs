@@ -53,6 +53,16 @@ namespace Haschisch.Hashers
                 (int)CombineRaw(value1, value2, value3, value4, value5);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6) =>
+                (int)CombineRaw(value1, value2, value3, value4, value5, value6);
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7) =>
+                (int)CombineRaw(value1, value2, value3, value4, value5, value6, value7);
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8) =>
                 (int)CombineRaw(value1, value2, value3, value4, value5, value6, value7, value8);
@@ -115,6 +125,41 @@ namespace Haschisch.Hashers
                 var d = (ulong)x3 << 32 | x2;
 
                 return City64Steps.Hash_Len17to32(a, b, c, d, 5 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            internal static ulong CombineRaw<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+                var x4 = (uint)(value4?.GetHashCode() ?? 0);
+                var x5 = (uint)(value5?.GetHashCode() ?? 0);
+                var x6 = (uint)(value6?.GetHashCode() ?? 0);
+                var a = (ulong)x2 << 32 | x1;
+                var b = (ulong)x4 << 32 | x3;
+                var c = (ulong)x6 << 32 | x5;
+                var d = (ulong)x4 << 32 | x3;
+
+                return City64Steps.Hash_Len17to32(a, b, c, d, 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            internal static ulong CombineRaw<T1, T2, T3, T4, T5, T6, T7>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var x1 = (uint)(value1?.GetHashCode() ?? 0);
+                var x2 = (uint)(value2?.GetHashCode() ?? 0);
+                var x3 = (uint)(value3?.GetHashCode() ?? 0);
+                var x4 = (uint)(value4?.GetHashCode() ?? 0);
+                var x5 = (uint)(value5?.GetHashCode() ?? 0);
+                var x6 = (uint)(value6?.GetHashCode() ?? 0);
+                var x7 = (uint)(value7?.GetHashCode() ?? 0);
+                var a = (ulong)x2 << 32 | x1;
+                var b = (ulong)x4 << 32 | x3;
+                var c = (ulong)x7 << 32 | x6;
+                var d = (ulong)x5 << 32 | x4;
+
+                return City64Steps.Hash_Len17to32(a, b, c, d, 7 * sizeof(int));
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

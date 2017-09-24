@@ -206,6 +206,41 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                var x6 = value6?.GetHashCode() ?? 0;
+                Sip13Steps.Initialize(DefaultSeed, out var v0, out var v1, out var v2, out var v3);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x1 | (ulong)x2 << 32);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x3 | (ulong)x4 << 32);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x5 | (ulong)x6 << 32);
+                return (int)Sip13Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                var x6 = value6?.GetHashCode() ?? 0;
+                var x7 = value7?.GetHashCode() ?? 0;
+                Sip13Steps.Initialize(DefaultSeed, out var v0, out var v1, out var v2, out var v3);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x1 | (ulong)x2 << 32);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x3 | (ulong)x4 << 32);
+                Sip13Steps.SipCRound(ref v0, ref v1, ref v2, ref v3, (uint)x5 | (ulong)x6 << 32);
+                return (int)Sip13Steps.Finish(ref v0, ref v1, ref v2, ref v3, (uint)x7, 7 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {

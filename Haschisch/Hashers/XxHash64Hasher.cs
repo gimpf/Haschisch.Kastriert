@@ -282,6 +282,40 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                var x6 = value6?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, 6 * sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x1 | (ulong)x2 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x3 | (ulong)x4 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x5 | (ulong)x6 << 32);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var x1 = value1?.GetHashCode() ?? 0;
+                var x2 = value2?.GetHashCode() ?? 0;
+                var x3 = value3?.GetHashCode() ?? 0;
+                var x4 = value4?.GetHashCode() ?? 0;
+                var x5 = value5?.GetHashCode() ?? 0;
+                var x6 = value6?.GetHashCode() ?? 0;
+                var x7 = value7?.GetHashCode() ?? 0;
+                XXHash64Steps.Short.Initialize(DefaultSeed + XXHash64Steps.Prime64n5, 7 * sizeof(int), out var state);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x1 | (ulong)x2 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x3 | (ulong)x4 << 32);
+                state = XXHash64Steps.Short.MixFinalLong(state, (uint)x5 | (ulong)x6 << 32);
+                state = XXHash64Steps.Short.MixFinalInt(state, (uint)x7);
+                return (int)XXHash64Steps.Short.Finish(ref state);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {

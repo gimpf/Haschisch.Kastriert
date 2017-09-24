@@ -64,6 +64,39 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var x = new PackedList<int, int, int, int, int, int>(
+                    value1?.GetHashCode() ?? 0,
+                    value2?.GetHashCode() ?? 0,
+                    value3?.GetHashCode() ?? 0,
+                    value4?.GetHashCode() ?? 0,
+                    value5?.GetHashCode() ?? 0,
+                    value6?.GetHashCode() ?? 0);
+
+                return (int)City32Steps.Hash_Len13to24(
+                    ref Unsafe.As<PackedList<int, int, int, int, int, int>, byte>(ref x), 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var x = new PackedList<int, int, int, int, int, int, int>(
+                    value1?.GetHashCode() ?? 0,
+                    value2?.GetHashCode() ?? 0,
+                    value3?.GetHashCode() ?? 0,
+                    value4?.GetHashCode() ?? 0,
+                    value5?.GetHashCode() ?? 0,
+                    value6?.GetHashCode() ?? 0,
+                    value7?.GetHashCode() ?? 0);
+
+                return (int)City32Steps.Hash_Gt24(
+                    ref Unsafe.As<PackedList<int, int, int, int, int, int, int>, byte>(ref x), 7 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {
@@ -146,6 +179,48 @@ namespace Haschisch.Hashers
                 var f = v5;
 
                 return (int)City32Steps.Hash_Len13to24(a, b, c, d, e, f, 5 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+                var v4 = (uint)(value4?.GetHashCode() ?? 0);
+                var v5 = (uint)(value5?.GetHashCode() ?? 0);
+                var v6 = (uint)(value6?.GetHashCode() ?? 0);
+
+                var a = v3;
+                var b = v2;
+                var c = v5;
+                var d = v4;
+                var e = v1;
+                var f = v6;
+
+                return (int)City32Steps.Hash_Len13to24(a, b, c, d, e, f, 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var v1 = (uint)(value1?.GetHashCode() ?? 0);
+                var v2 = (uint)(value2?.GetHashCode() ?? 0);
+                var v3 = (uint)(value3?.GetHashCode() ?? 0);
+                var v4 = (uint)(value4?.GetHashCode() ?? 0);
+                var v5 = (uint)(value5?.GetHashCode() ?? 0);
+                var v6 = (uint)(value6?.GetHashCode() ?? 0);
+                var v7 = (uint)(value7?.GetHashCode() ?? 0);
+
+                City32Steps.Initialize_Gt24(
+                    v7, v6, v4, v5, v3,
+                    7 * sizeof(int),
+                    out var h, out var g, out var f);
+                City32Steps.Update_Gt24(
+                    ref h, ref g, ref f,
+                    v1, v2, v3, v4, v5);
+                return (int)City32Steps.Finish(ref h, ref g, ref f);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

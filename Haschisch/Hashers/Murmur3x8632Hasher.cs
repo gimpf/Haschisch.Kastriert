@@ -226,6 +226,48 @@ namespace Haschisch.Hashers
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+            {
+                var v1 = value1?.GetHashCode() ?? 0;
+                var v2 = value2?.GetHashCode() ?? 0;
+                var v3 = value3?.GetHashCode() ?? 0;
+                var v4 = value4?.GetHashCode() ?? 0;
+                var v5 = value5?.GetHashCode() ?? 0;
+                var v6 = value6?.GetHashCode() ?? 0;
+                Murmur3x8632Steps.Initialize(DefaultSeed, out var state);
+                state = Murmur3x8632Steps.MixStep((uint)v1, state);
+                state = Murmur3x8632Steps.MixStep((uint)v2, state);
+                state = Murmur3x8632Steps.MixStep((uint)v3, state);
+                state = Murmur3x8632Steps.MixStep((uint)v4, state);
+                state = Murmur3x8632Steps.MixStep((uint)v5, state);
+                state = Murmur3x8632Steps.MixStep((uint)v6, state);
+                return (int)Murmur3x8632Steps.FinishWithoutPartial(state, 6 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Combine<T1, T2, T3, T4, T5, T6, T7>(
+                T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7)
+            {
+                var v1 = value1?.GetHashCode() ?? 0;
+                var v2 = value2?.GetHashCode() ?? 0;
+                var v3 = value3?.GetHashCode() ?? 0;
+                var v4 = value4?.GetHashCode() ?? 0;
+                var v5 = value5?.GetHashCode() ?? 0;
+                var v6 = value6?.GetHashCode() ?? 0;
+                var v7 = value7?.GetHashCode() ?? 0;
+                Murmur3x8632Steps.Initialize(DefaultSeed, out var state);
+                state = Murmur3x8632Steps.MixStep((uint)v1, state);
+                state = Murmur3x8632Steps.MixStep((uint)v2, state);
+                state = Murmur3x8632Steps.MixStep((uint)v3, state);
+                state = Murmur3x8632Steps.MixStep((uint)v4, state);
+                state = Murmur3x8632Steps.MixStep((uint)v5, state);
+                state = Murmur3x8632Steps.MixStep((uint)v6, state);
+                state = Murmur3x8632Steps.MixStep((uint)v7, state);
+                return (int)Murmur3x8632Steps.FinishWithoutPartial(state, 7 * sizeof(int));
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {
