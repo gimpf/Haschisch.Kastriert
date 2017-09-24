@@ -75,10 +75,10 @@ namespace Haschisch.Hashers
                 var v3 = (uint)(value3?.GetHashCode() ?? 0);
                 var v4 = (uint)(value4?.GetHashCode() ?? 0);
 
-                var a = (uint)((ushort)(v1 >> 16) | (ushort)v2);
+                var a = ((ushort)(v1 >> 16) | ((uint)(ushort)v2 << 16));
                 var b = v1;
                 var c = v3;
-                var d = (uint)((ushort)(v2 >> 16) | (ushort)v3);
+                var d = ((ushort)(v2 >> 16) | ((uint)(ushort)v3 << 16));
                 var e = Seed;
                 var f = v4;
 

@@ -112,7 +112,7 @@ namespace Haschisch.Hashers
                 var a = (ulong)x2 << 32 | x1;
                 var b = (ulong)x4 << 32 | x3;
                 var c = (ulong)x5 << 32 | x4;
-                var d = (ulong)x4 << 32 | x3;
+                var d = (ulong)x3 << 32 | x2;
 
                 return City64Steps.Hash_Len17to32(a, b, c, d, 5 * sizeof(int));
             }

@@ -138,10 +138,10 @@ namespace Haschisch.Hashers
                 var v4 = (uint)(value4?.GetHashCode() ?? 0);
                 var v5 = (uint)(value5?.GetHashCode() ?? 0);
 
-                var a = (uint)((ushort)(v2 >> 16) | (ushort)v3);
+                var a = ((ushort)(v2 >> 16) | ((uint)(ushort)v3 << 16));
                 var b = v2;
                 var c = v4;
-                var d = (uint)((ushort)(v3 >> 16) | (ushort)v4);
+                var d = ((ushort)(v3 >> 16) | ((uint)(ushort)v4 << 16));
                 var e = v1;
                 var f = v5;
 

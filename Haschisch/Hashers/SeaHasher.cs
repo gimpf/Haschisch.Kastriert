@@ -288,7 +288,7 @@ namespace Haschisch.Hashers
                     (uint)v1 | ((ulong)v2 << 32),
                     (uint)v3 | ((ulong)v4 << 32),
                     (uint)v5 | ((ulong)v6 << 32),
-                    (uint)v7 | ((ulong)v7 << 32));
+                    (uint)v7 | ((ulong)v8 << 32));
                 return (int)SeaHashSteps.Finish(ref a, ref b, ref c, ref d, 8 * sizeof(int));
             }
         }

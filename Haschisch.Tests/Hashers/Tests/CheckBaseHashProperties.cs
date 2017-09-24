@@ -299,6 +299,13 @@ namespace Haschisch.Hashers.Tests
                         BitConverter.ToInt32(data, 4),
                         BitConverter.ToInt32(data, 8),
                         BitConverter.ToInt32(data, 12));
+                case 20:
+                    return combiner.Combine(
+                        BitConverter.ToInt32(data, 0),
+                        BitConverter.ToInt32(data, 4),
+                        BitConverter.ToInt32(data, 8),
+                        BitConverter.ToInt32(data, 12),
+                        BitConverter.ToInt32(data, 16));
                 case 32:
                     return combiner.Combine(
                         BitConverter.ToInt32(data, 0),
