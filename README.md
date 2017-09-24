@@ -21,7 +21,7 @@ Performance remarks:
 * For combining hash-codes, the `Combiner`-types of Murmur3x86-32 and City32 seem good.  xx32 is an option.
 * Spooky-V2 and SeaHash seem unusually slow, the other hash-implementations seems "somewhat ok".
 * For large-ish messages (larger than 2 kiB) the _Block_ implementation of xxHash64 seems acceptably fast.  City64 is likely not bad, but I've no exact numbers ready.
-* Some _Stream_-type implementations support block updates with the unsafe API.  They should be good enough for file-checksumming etc.  Again, xxHash64 work acceptably well.
+* Some _Stream_-type implementations support block updates with the unsafe API.  They should be good enough for file-checksumming etc.  Again, xxHash64 works acceptably well.
 * Using _Stream_ to hash by byte or by int32 isn't anywhere near acceptable performance.
 
 
