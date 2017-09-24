@@ -149,6 +149,7 @@ namespace Haschisch.Hashers
 
         public struct Combiner : IHashCodeCombiner
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1>(T1 value1)
             {
                 var x1 = value1?.GetHashCode() ?? 0;
@@ -156,6 +157,7 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, (uint)x1, sizeof(int));
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2>(T1 value1, T2 value2)
             {
                 var x1 = value1?.GetHashCode() ?? 0;
@@ -165,6 +167,7 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 2 * sizeof(int));
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
             {
                 var x1 = (uint)(value1?.GetHashCode() ?? 0);
@@ -175,6 +178,7 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, x3, 3 * sizeof(int));
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var x1 = value1?.GetHashCode() ?? 0;
@@ -187,6 +191,7 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, 0, 4 * sizeof(int));
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
             {
                 var x1 = value1?.GetHashCode() ?? 0;
@@ -200,6 +205,7 @@ namespace Haschisch.Hashers
                 return (int)Sip24Steps.Finish(ref v0, ref v1, ref v2, ref v3, (uint)x5, 5 * sizeof(int));
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {

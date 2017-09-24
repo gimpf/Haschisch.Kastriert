@@ -32,21 +32,27 @@ namespace Haschisch.Hashers
 
         public struct Combiner : IHashCodeCombiner
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1>(T1 value1) =>
                 (int)CombineRaw(value1);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2>(T1 value1, T2 value2) =>
                 (int)CombineRaw(value1, value2);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3) =>
                 (int)CombineRaw(value1, value2, value3);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4) =>
                 (int)CombineRaw(value1, value2, value3, value4);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5) =>
                 (int)CombineRaw(value1, value2, value3, value4, value5);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8) =>
                 (int)CombineRaw(value1, value2, value3, value4, value5, value6, value7, value8);

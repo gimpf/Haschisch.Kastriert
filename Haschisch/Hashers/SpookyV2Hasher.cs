@@ -353,6 +353,7 @@ namespace Haschisch.Hashers
 
         public struct Combiner : IHashCodeCombiner
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1>(T1 x1)
             {
                 var h0 = x1?.GetHashCode() ?? 0;
@@ -364,6 +365,7 @@ namespace Haschisch.Hashers
                     sizeof(int)).Item1;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2>(T1 x1, T2 x2)
             {
                 var h0 = x1?.GetHashCode() ?? 0;
@@ -376,6 +378,7 @@ namespace Haschisch.Hashers
                     2 * sizeof(int)).Item1;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3>(T1 x1, T2 x2, T3 x3)
             {
                 var h0 = (uint)(x1?.GetHashCode() ?? 0);
@@ -389,6 +392,7 @@ namespace Haschisch.Hashers
                     3 * sizeof(int)).Item1;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4>(T1 x1, T2 x2, T3 x3, T4 x4)
             {
                 var h0 = x1?.GetHashCode() ?? 0;
@@ -403,6 +407,7 @@ namespace Haschisch.Hashers
                     4 * sizeof(int)).Item1;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5>(T1 x1, T2 x2, T3 x3, T4 x4, T5 x5)
             {
                 var h0 = x1?.GetHashCode() ?? 0;
@@ -418,6 +423,7 @@ namespace Haschisch.Hashers
                     5 * sizeof(int)).Item1;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(T1 x1, T2 x2, T3 x3, T4 x4, T5 x5, T6 x6, T7 x7, T8 x8)
             {
                 var h0 = x1?.GetHashCode() ?? 0;

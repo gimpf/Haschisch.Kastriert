@@ -6,6 +6,7 @@ namespace Haschisch.Benchmarks
     public static class GenericCombiner<THasher>
         where THasher : IUnsafeBlockHasher<int>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1>(T1 value1)
         {
             var h = value1?.GetHashCode() ?? 0;
@@ -15,6 +16,7 @@ namespace Haschisch.Benchmarks
                 sizeof(int));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2>(T1 value1, T2 value2)
         {
             var h = new PackedList<int, int>(
@@ -26,6 +28,7 @@ namespace Haschisch.Benchmarks
                 2 * sizeof(int));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
         {
             var h = new PackedList<int, int, int>(
@@ -38,6 +41,7 @@ namespace Haschisch.Benchmarks
                 3 * sizeof(int));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
         {
             var h = new PackedList<int, int, int, int>(
@@ -51,6 +55,7 @@ namespace Haschisch.Benchmarks
                 4 * sizeof(int));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
             T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
         {

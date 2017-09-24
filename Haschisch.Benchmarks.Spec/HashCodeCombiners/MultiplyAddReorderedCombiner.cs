@@ -6,6 +6,7 @@ namespace Haschisch.Benchmarks
     // before doing the mixing
     public struct MultiplyAddReorderedCombiner : IHashCodeCombiner
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1>(T1 value1)
         {
             unchecked
@@ -18,6 +19,7 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2>(T1 value1, T2 value2)
         {
             unchecked
@@ -32,6 +34,7 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
         {
             unchecked
@@ -48,6 +51,7 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
         {
             unchecked
@@ -66,6 +70,7 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
         {
             unchecked
@@ -86,6 +91,7 @@ namespace Haschisch.Benchmarks
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
             T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
         {

@@ -65,36 +65,42 @@ namespace Haschisch.Hashers
 
         public struct Combiner : IHashCodeCombiner
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1>(T1 value1)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1);
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2>(T1 value1, T2 value2)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1, value2);
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3>(T1 value1, T2 value2, T3 value3)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1, value2, value3);
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4>(T1 value1, T2 value2, T3 value3, T4 value4)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1, value2, value3, value4);
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5>(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
             {
                 var h = City64Hasher.Combiner.CombineRaw(value1, value2, value3, value4, value5);
                 return (int)City64Steps.MixSeeds(h, Seed0, Seed1);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int Combine<T1, T2, T3, T4, T5, T6, T7, T8>(
                 T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6, T7 value7, T8 value8)
             {
