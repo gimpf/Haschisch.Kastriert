@@ -7,15 +7,15 @@ namespace Haschisch.Benchmarks
     public class CombineHashCodes
     {
         private static readonly Random rnd = new Random(42);
-        private static readonly int v1 = rnd.Next();
-        private static readonly int v2 = rnd.Next();
-        private static readonly int v3 = rnd.Next();
-        private static readonly int v4 = rnd.Next();
-        private static readonly int v5 = rnd.Next();
-        private static readonly int v6 = rnd.Next();
-        private static readonly int v7 = rnd.Next();
-        private static readonly int v8 = rnd.Next();
-        private static readonly int seed = rnd.Next();
+        private static int v1 = rnd.Next();
+        private static int v2 = rnd.Next();
+        private static int v3 = rnd.Next();
+        private static int v4 = rnd.Next();
+        private static int v5 = rnd.Next();
+        private static int v6 = rnd.Next();
+        private static int v7 = rnd.Next();
+        private static int v8 = rnd.Next();
+        private static int seed = rnd.Next();
 
         private ICombine combiner;
 
@@ -24,9 +24,6 @@ namespace Haschisch.Benchmarks
 
         // going through combiner creates some overhead, but it's constant and the same
         // for all algorithms, so we can ignore it w.r.t. relative performance
-        //
-        // why at all? to make the summary output of benchmarkdotnet more readable;
-        // simplifies playing around with implementations
         [GlobalSetup]
         public void InitializeCombiner()
         {
@@ -47,6 +44,24 @@ namespace Haschisch.Benchmarks
                 default:
                     throw new InvalidOperationException("unsupported combine count");
             }
+        }
+
+        // without resetting the hash-codes on each iteration, some benchmarked implementations return
+        // invalid data (for at least one runtime, typically some ryu-jit variant); looking at the result
+        // it seems that city64 without seed collapses into a constant...  Funnily enough, murmur-3-32
+        // only had the same behavior when instead of using static readonly fields I used literal constants
+        [IterationSetup]
+        public void UpdateHashCodes()
+        {
+            v1 = rnd.Next();
+            v2 = rnd.Next();
+            v3 = rnd.Next();
+            v4 = rnd.Next();
+            v5 = rnd.Next();
+            v6 = rnd.Next();
+            v7 = rnd.Next();
+            v8 = rnd.Next();
+            seed = rnd.Next();
         }
 
         // clean up so that memory-diagnoser has correct results
@@ -138,6 +153,8 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city32", "variant", "no-seed")]
         public int City32_NonUnrolled_Combine() => this.combiner.City32_NonUnrolled_Combine();
 
+        // for .NET 4.7 64bit (ryujit), this benchmark produced incorrect results until the
+        // stream of combined hash-codes was not fixed throughout the iteration
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city64", "prime", "no-seed")]
         public int City64_Combine() => this.combiner.City64_Combine();
 
