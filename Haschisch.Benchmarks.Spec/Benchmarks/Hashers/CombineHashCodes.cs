@@ -76,7 +76,7 @@ namespace Haschisch.Benchmarks
         public int Empty() => this.combiner.Empty();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "prime", "no-seed")]
-        public int MultiplyAddReordered_Custom() => this.combiner.MultiplyAddReordered_Custom();
+        public int MultiplyAdd_Reordered_Custom() => this.combiner.MultiplyAdd_Reordered_Custom();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "multiply-add", "variant", "no-seed")]
         public int MultiplyAdd_Custom() => this.combiner.MultiplyAdd_Custom();
@@ -145,13 +145,13 @@ namespace Haschisch.Benchmarks
         public int SpookyV2_Combine() => this.combiner.SpookyV2_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city32", "prime", "per-ad-seed")]
-        public int City32_Combine() => this.combiner.City32_Combine();
+        public int City32_CustomSeed_Combine() => this.combiner.City32_CustomSeed_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city32", "variant", "no-seed")]
-        public int City32_Unseeded_Combine() => this.combiner.City32_Unseeded_Combine();
+        public int City32_OldUnseeded_Combine() => this.combiner.City32_OldUnseeded_Combine();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "city", "city32", "variant", "no-seed")]
-        public int City32_NonUnrolled_Combine() => this.combiner.City32_NonUnrolled_Combine();
+        public int City32_OldNonUnrolled_Combine() => this.combiner.City32_OldNonUnrolled_Combine();
 
         // for .NET 4.7 64bit (ryujit), this benchmark produced incorrect results until the
         // stream of combined hash-codes was not fixed throughout the iteration
@@ -165,7 +165,7 @@ namespace Haschisch.Benchmarks
         {
             public int Empty() => 0;
 
-            public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1);
+            public int MultiplyAdd_Reordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(v1);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1);
@@ -188,9 +188,9 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1);
-            public int City32_Combine() => default(City32Hasher.Combiner).Combine(v1);
-            public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1);
-            public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1);
+            public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1);
+            public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1);
+            public int City32_OldNonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1);
             public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1);
         }
@@ -199,7 +199,7 @@ namespace Haschisch.Benchmarks
         {
             public int Empty() => 0;
 
-            public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2);
+            public int MultiplyAdd_Reordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(v1, v2);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2);
@@ -222,9 +222,9 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2);
-            public int City32_Combine() => default(City32Hasher.Combiner).Combine(v1, v2);
-            public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2);
-            public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2);
+            public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2);
+            public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2);
+            public int City32_OldNonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2);
             public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2);
         }
@@ -233,7 +233,7 @@ namespace Haschisch.Benchmarks
         {
             public int Empty() => 0;
 
-            public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2, v3, v4);
+            public int MultiplyAdd_Reordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2, v3, v4);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2, v3, v4);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2, v3, v4);
@@ -256,9 +256,9 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4);
-            public int City32_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4);
-            public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4);
-            public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4);
+            public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4);
+            public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4);
+            public int City32_OldNonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2, v3, v4);
             public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2, v3, v4);
         }
@@ -267,7 +267,7 @@ namespace Haschisch.Benchmarks
         {
             public int Empty() => 0;
 
-            public int MultiplyAddReordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int MultiplyAdd_Reordered_Custom() => MultiplyAddReorderedCombiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int MultiplyAdd_Custom() => MultiplyAddCombiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_Tannergooding_Custom() => Murmur3A_TG_Combiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int Murmur3A_TannergoodingWithSeed_Custom() => Murmur3A_TG_WithSeed_Combiner.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
@@ -290,9 +290,9 @@ namespace Haschisch.Benchmarks
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
-            public int City32_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
-            public int City32_Unseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
-            public int City32_NonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int City32_OldNonUnrolled_Combine() => default(City32OldHasher.CombinerNonUnrolled).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City64_Combine() => default(City64Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City64WithSeeds_Combine() => default(City64WithSeedsHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
         }
@@ -303,8 +303,9 @@ namespace Haschisch.Benchmarks
 
             // algorithm _ algorithm-implementation _ combiner
             //
-            int MultiplyAddReordered_Custom();
+            int MultiplyAdd_Reordered_Custom();
             int MultiplyAdd_Custom();
+
             int Murmur3A_Tannergooding_Custom();
             int Murmur3A_TannergoodingWithSeed_Custom();
             int Murmur3A_TannergoodingWithSeedArg_Custom();
@@ -312,23 +313,30 @@ namespace Haschisch.Benchmarks
             int Murmur3A_Steps_Custom();
             int Murmur3A_Combine();
             int Murmur3A_Block();
+
             int HSip13_Combine();
             int HSip13_Block();
             int HSip24_Combine();
             int Sip13_Combine();
             int Sip24_Combine();
+
             int Marvin32_Combine();
             int Marvin32_Block();
+
             int XXHash32_Combine();
             int XXHash32_Block();
             int XXHash64_Combine();
             int XXHash64_Block();
+
             int SeaHash_Block();
             int SeaHash_Combine();
+
             int SpookyV2_Combine();
-            int City32_Combine();
-            int City32_Unseeded_Combine();
-            int City32_NonUnrolled_Combine();
+
+            int City32_CustomSeed_Combine();
+            int City32_OldUnseeded_Combine();
+            int City32_OldNonUnrolled_Combine();
+
             int City64_Combine();
             int City64WithSeeds_Combine();
         }
