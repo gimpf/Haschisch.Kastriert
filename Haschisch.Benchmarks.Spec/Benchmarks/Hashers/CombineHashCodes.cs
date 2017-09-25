@@ -153,6 +153,9 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "variant", "no-seed")]
         public int SeaHash_Block() => this.combiner.SeaHash_Block();
 
+        [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "variant", "per-ad-seed")]
+        public int SeaHash_Experimental_Combine() => this.combiner.SeaHash_Experimental_Combine();
+
         [Benchmark][BenchmarkCategory("combine", "throughput", "spookyv2", "prime", "per-ad-seed")]
         public int SpookyV2_Combine() => this.combiner.SpookyV2_Combine();
 
@@ -199,6 +202,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1);
@@ -233,6 +237,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2);
@@ -267,6 +272,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3);
@@ -301,6 +307,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3, v4);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3, v4);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4);
@@ -335,6 +342,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3, v4, v5);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4, v5);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4, v5);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3, v4, v5);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4, v5);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5);
@@ -369,6 +377,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3, v4, v5, v6);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4, v5, v6);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6);
@@ -403,6 +412,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6, v7);
@@ -437,6 +447,7 @@ namespace Haschisch.Benchmarks
             public int XXHash64_Block() => GenericCombiner<XXHash64Hasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int SeaHash_Combine() => default(SeaHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int SeaHash_Block() => GenericCombiner<SeaHasher.Block>.Combine(v1, v2, v3, v4, v5, v6, v7, v8);
+            public int SeaHash_Experimental_Combine() => default(SeaExperimentalHasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int SpookyV2_Combine() => default(SpookyV2Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City32_CustomSeed_Combine() => default(City32Hasher.Combiner).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
             public int City32_OldUnseeded_Combine() => default(City32OldHasher.CombinerUnseeded).Combine(v1, v2, v3, v4, v5, v6, v7, v8);
@@ -478,6 +489,7 @@ namespace Haschisch.Benchmarks
 
             int SeaHash_Block();
             int SeaHash_Combine();
+            int SeaHash_Experimental_Combine();
 
             int SpookyV2_Combine();
 
