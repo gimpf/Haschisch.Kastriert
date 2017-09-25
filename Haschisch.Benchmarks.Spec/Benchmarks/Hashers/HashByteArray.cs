@@ -29,8 +29,14 @@ namespace Haschisch.Benchmarks
             this.data = null;
         }
 
+        [Benchmark]
+        [BenchmarkCategory("array", "throughput", "sea", "prime", "no-seed")]
+        public int SeaHash_Experimental_Block() => HashByteArrayUtil.HashWithBlock<SeaExperimentalHasher.Block>(this.data);
+
+
         [Benchmark][BenchmarkCategory("array", "throughput", "sea", "prime", "no-seed")]
         public int SeaHash_Block() => HashByteArrayUtil.HashWithBlock<SeaHasher.Block>(this.data);
+
 
         [Benchmark][BenchmarkCategory("array", "throughput", "sea", "variant", "no-seed")]
         public int SeaHash_Stream() => HashByteArrayUtil.HashWithStreaming<SeaHasher.Stream>(this.data);
