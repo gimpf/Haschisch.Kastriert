@@ -1,36 +1,13 @@
 # Haschisch: A .NET Library for Non-Cryptographic Hashes
 
-Collection of some non-cryptographic hash algorithm implementations in C#.
-
-
-
-## Current State
-
-Available algorithms: xx32, xx64, city32, city64, city64 w/seeds, hsip13, hsip24, sip13, sip24, seahash, marvin32, spookyv2.
-
-Most algorithms are available for these interfaces:
-
-* `IHashCodeCombiner`: Combine the hash-codes of .NET values into a new hash-code.  Currently the main optimization target.
-* `IBlockHasher<int>`: Calculate the hash of a contiguous block of memory
-* `IUnsafeBlockHasher<int>`: as above, but working of `ref byte` instead of an array, obviously unsafe
-* `IStreamingHasher<int>`: Incremental hash calculation.  `city`-type hashes don't support this.
-
-Performance remarks:
-
-* Nothing is perfectly well optimized yet, but Murmur-3-32, City and xx seem doing well.
-* For combining hash-codes, the `Combiner`-types of Murmur3x86-32 and City32 seem good.  xx32 is an option.
-* Spooky-V2 and SeaHash seem unusually slow, the other hash-implementations seems "somewhat ok".
-* For large-ish messages (larger than 2 kiB) the _Block_ implementation of xxHash64 seems acceptably fast.  City64 is likely not bad, but I've no exact numbers ready.
-* Some _Stream_-type implementations support block updates with the unsafe API.  They should be good enough for file-checksumming etc.  Again, xxHash64 works acceptably well.
-* Using _Stream_ to hash by byte or by int32 isn't anywhere near acceptable performance.
-
+_Haschisch_ provides several non-cryptographic hash algorithms for .NET, featuring a common API and high-performance implementations.
 
 
 ## Getting Started
 
 0. .NET Core 2 SDK required
-1. build solution (`dotnet publish -c Release`)
-2. run benchmarks like `dotnet bin/Release/netcoreapp2.0/publish/Haschisch.Benchmarks.dll -j:core_x64 -- CombineHashCodes --allcategories=prime,per-ad-seed`
+1. build solution:`dotnet publish -c Release`
+2. run benchmarks: `dotnet bin/Release/netcoreapp2.0/publish/Haschisch.Benchmarks.dll -j:core_x64 -- CombineHashCodes --allcategories=prime,per-ad-seed`
 
 To use one of hashers:
 
@@ -42,10 +19,45 @@ HashWithBlock<XXHash64Hasher.Block>(new byte[0]);
 ```
 
 
+## Current State
+
+Available algorithms:
+
+- XXHash: xx32, xx64
+- CityHash: city32, city64, city64 w/seeds,
+- HalfSip: hsip13, hsip24
+- Sip: sip13, sip24
+- _Ferner liefen_: seahash, marvin32, spookyv2.
+
+Most algorithms are available for these interfaces:
+
+* `IHashCodeCombiner`: Combine the hash-codes of .NET values into a new hash-code, that is, precursors and alternatives to [the new `System.HashCode` type](https://github.com/dotnet/corefx/issues/14354).
+* `IStreamingHasher<int>`: Incremental/Streaming hash calculation, following the well-known init-mix-mix-finish interface.  `city`-type hashes don't support this.
+* `IBlockHasher<int>`: Calculate the hash of a contiguous block of memory.
+* `IUnsafeBlockHasher<int>`: as above, but working of `ref byte` instead of an array, obviously unsafe.
+
+The size of the hash-codes depend on the algorithm, but hash-codes shortened to 32bit are available as a common API.
+
+Performance remarks w.r.t. to algorithm selection:
+
+* XXHash, Murmur-3-32, Sip and Half-Sip perform well, that is not too much slower than reference C implementations.
+* For combining hash-codes, the `Combiner`-type for XXHash32 is the fastest accross both 64- and 32-bit .NET targets.  Sip-1-3 is doing well on 64 bit.
+* For large-ish messages (larger than 2 kiB) the _Block_ implementation of xxHash64 seems acceptably fast (on 64bit targets).
+* CityHash, SpookyHash and SeaHash are usable, but are slower than expected compared to XX etc.
+
+Performance remarks for all algorithms:
+
+* The native implementations are always faster than anything here.
+* All implementations are non-allocating, that is there are no hidden penalties because of GC pressure.
+* Only RyuJit leads to usable performance.  Running this on old runtimes will strongly disappoint you.
+* Some _Stream_-type implementations support block updates with the unsafe API.  They should be good enough for file-checksumming etc.  Again, xxHash64 works acceptably well.
+* Using _Stream_-type implementations with small updates leads to disastrous performance.
+
+
 
 ## Changelog
 
-* **WIP**: introduce new hash-algorithms (sip13, sip24, city32, city64, city64-w-seeds, spookyv2), and optimize existing and new ones, especially for hash-code-combining; also extend the test-coverage
+* **WIP**: introduce new hash-algorithms (sip13, sip24, city32, city64, city64-w-seeds, spookyv2), and optimize existing and new ones, especially for hash-code-combining; also extend the test-coverage, and simplify benchmarking
 * **0.3.0**: introduce `IHashCodeCombiner`, extend benchmarks to compare performance for use-cases related to [dotnet/corefx issue 'Add System.HashCode'](https://github.com/dotnet/corefx/issues/14354).
 * **0.2.0**: port to .NETStandard 2.0 and .NET Core 2.0
 * **0.1.0**: first public version, having Block and Stream hashers for xx32, xx64, seahash, marvin32, hsip13, hsip24
