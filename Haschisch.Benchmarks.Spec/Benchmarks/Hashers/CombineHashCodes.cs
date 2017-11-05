@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using Haschisch.Hashers;
 
@@ -19,8 +20,18 @@ namespace Haschisch.Benchmarks
 
         private ICombine combiner;
 
-        [Params(4, 8, 12, 16, 20, 24, 28, 32)]
-        public int Bytes { get; set; }
+        [ParamsSource(nameof(BytesParamSource))]
+        public int Bytes;
+
+        public IEnumerable<int> BytesParamSource
+        {
+            get
+            {
+                if (Environment.GetEnvironmentVariable("bench-detail") == "quick-and-dirty") { return new[] { 4, 32 }; }
+                else if (Environment.GetEnvironmentVariable("bench-detail") == "quick") { return new[] { 4, 8, 16, 32 }; }
+                else { return new[] { 4, 8, 12, 16, 20, 24, 28, 32 }; }
+            }
+        }
 
         // going through combiner creates some overhead, but it's constant and the same
         // for all algorithms, so we can ignore it w.r.t. relative performance
@@ -54,7 +65,11 @@ namespace Haschisch.Benchmarks
                     this.combiner = new Combiner8();
                     break;
                 default:
-                    throw new InvalidOperationException("unsupported combine count");
+                    // this should throw an exception, but
+                    // when using a ParamsSource, benchmark verification runs GlobalSetup w/o setting a parameter
+                    // TODO fix issue in benchmarkdotnet
+                    this.combiner = new Combiner1();
+                    break;
             }
         }
 
@@ -135,16 +150,16 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("combine", "throughput", "marvin32", "variant", "per-ad-seed")]
         public int Marvin32_Block() => this.combiner.Marvin32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx", "xx32", "prime", "per-ad-seed")]
         public int XXHash32_Combine() => this.combiner.XXHash32_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx32", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx", "xx32", "variant", "per-ad-seed")]
         public int XXHash32_Block() => this.combiner.XXHash32_Block();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx", "xx64", "prime", "per-ad-seed")]
         public int XXHash64_Combine() => this.combiner.XXHash64_Combine();
 
-        [Benchmark][BenchmarkCategory("combine", "throughput", "xx64", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("combine", "throughput", "xx", "xx64", "variant", "per-ad-seed")]
         public int XXHash64_Block() => this.combiner.XXHash64_Block();
 
         [Benchmark][BenchmarkCategory("combine", "throughput", "sea", "prime", "per-ad-seed")]

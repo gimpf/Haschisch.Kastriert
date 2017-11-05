@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
 using Haschisch.Hashers;
 
 namespace Haschisch.Benchmarks
@@ -9,8 +11,18 @@ namespace Haschisch.Benchmarks
     {
         private byte[] data;
 
-        [Params(4, 8, 16, 32, 256, 1024, 4096, 16 * 1024)]
-        public int Bytes { get; set; }
+        [ParamsSource(nameof(BytesParamSource))]
+        public int Bytes;
+
+        public IEnumerable<int> BytesParamSource
+        {
+            get
+            {
+                if (Environment.GetEnvironmentVariable("bench-detail") == "quick-and-dirty") { return new[] { 4, 32, 2048 }; }
+                else if (Environment.GetEnvironmentVariable("bench-detail") == "quick") { return new[] { 4, 32, 256, 2048, 8 * 1024 }; }
+                else { return new[] { 4, 8, 12, 16, 20, 24, 28, 32, 64, 256, 1024, 4096, 16 * 1024 }; }
+            }
+        }
 
         [GlobalSetup]
         public void InitializeData()
@@ -53,22 +65,22 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("array", "throughput", "murmur-3-32", "variant", "per-ad-seed")]
         public int Murmur3x8632_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<Murmur3x8632Hasher.Stream>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx32", "prime", "per-ad-seed")]
         public int XxHash32_Block() => HashByteArrayUtil.HashWithBlock<XXHash32Hasher.Block>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx32", "variant", "per-ad-seed")]
         public int XxHash32_Stream() => HashByteArrayUtil.HashWithStreaming<XXHash32Hasher.Stream>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx32", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx32", "variant", "per-ad-seed")]
         public int XxHash32_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<XXHash32Hasher.Stream>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx64", "prime", "per-ad-seed")]
         public int XxHash64_Block() => HashByteArrayUtil.HashWithBlock<XXHash64Hasher.Block>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx64", "variant", "per-ad-seed")]
         public int XxHash64_Stream() => HashByteArrayUtil.HashWithStreaming<XXHash64Hasher.Stream>(this.data);
 
-        [Benchmark][BenchmarkCategory("array", "throughput", "xx64", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("array", "throughput", "xx", "xx64", "variant", "per-ad-seed")]
         public int XxHash64_Stream_ByU32() => HashByteArrayUtil.HashWithStreamingByBlockedU32Unsafe<XXHash64Hasher.Stream>(this.data);
 
         [Benchmark][BenchmarkCategory("array", "throughput", "hsip", "hsip-1-3", "prime")]

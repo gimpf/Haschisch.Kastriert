@@ -79,16 +79,16 @@ namespace Haschisch.Benchmarks
         [Benchmark][BenchmarkCategory("hashset", "sip", "sip-2-4", "variant", "per-ad-seed")]
         public HashSet<Large> Sip24_Block() => this.RunHashSetBenchmark_ByBlock<Sip13Hasher.Block>();
 
-        [Benchmark][BenchmarkCategory("hashset", "xx32", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "xx", "xx32", "prime", "per-ad-seed")]
         public HashSet<Large> XXHash32_Combiner() => this.RunHashSetBenchmark_ByCombiner<XXHash32Hasher.Combiner>();
 
-        [Benchmark][BenchmarkCategory("hashset", "xx32", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "xx", "xx32", "variant", "per-ad-seed")]
         public HashSet<Large> XXHash32_Block() => this.RunHashSetBenchmark_ByBlock<XXHash32Hasher.Block>();
 
-        [Benchmark][BenchmarkCategory("hashset", "xx64", "prime", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "xx", "xx64", "prime", "per-ad-seed")]
         public HashSet<Large> XXHash64_Combiner() => this.RunHashSetBenchmark_ByCombiner<XXHash64Hasher.Combiner>();
 
-        [Benchmark][BenchmarkCategory("hashset", "xx64", "variant", "per-ad-seed")]
+        [Benchmark][BenchmarkCategory("hashset", "xx", "xx64", "variant", "per-ad-seed")]
         public HashSet<Large> XXHash64_Block() => this.RunHashSetBenchmark_ByBlock<XXHash64Hasher.Block>();
 
         [Benchmark][BenchmarkCategory("hashset", "sea", "prime", "per-ad-seed")]

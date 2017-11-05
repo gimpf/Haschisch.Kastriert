@@ -7,6 +7,7 @@ using BenchmarkDotNet.Horology;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.CsProj;
+using BenchmarkDotNet.Toolchains.DotNetCli;
 using BenchmarkDotNet.Validators;
 
 namespace Haschisch.Benchmarks
@@ -79,8 +80,9 @@ Examples:
 
             if (args.Contains("-j:core_x86"))
             {
+                var coreX86Settings = NetCoreAppSettings.NetCoreApp20.WithCustomDotNetCliPath(@"C:\Program Files (x86)\dotnet\dotnet.exe", ".NET Core 2.0 x86");
                 jobs.Add(Job.Core
-                    .With(CsProjCoreToolchain.NetCoreApp20)
+                    .With(CsProjCoreToolchain.From(coreX86Settings))
                     .With(Platform.X86)
                     .With(Jit.RyuJit)
                     .WithId("core-x86-32"));
@@ -104,15 +106,25 @@ Examples:
 
             if (args.Contains("--quick"))
             {
+                Environment.SetEnvironmentVariable("bench-detail", "quick");
                 jobs = jobs
-                    .Select(j => j.WithMinIterationTime(75 * TimeInterval.Millisecond).WithMaxRelativeError(0.075).WithId(j.Id))
+                    .Select(j => j
+                        .WithMinIterationTime(75 * TimeInterval.Millisecond)
+                        .WithMaxRelativeError(0.075)
+                        .With(new[] { new EnvironmentVariable("bench-detail", "quick") })
+                        .WithId(j.Id))
                     .ToList();
             }
 
             if (args.Contains("--quick-and-dirty"))
             {
+                Environment.SetEnvironmentVariable("bench-detail", "quick-and-dirty");
                 jobs = jobs
-                    .Select(j => j.WithMinIterationTime(10 * TimeInterval.Millisecond).WithMaxRelativeError(0.2).WithId(j.Id))
+                    .Select(j => j
+                        .WithMinIterationTime(10 * TimeInterval.Millisecond)
+                        .WithMaxRelativeError(0.2)
+                        .With(new[] { new EnvironmentVariable("bench-detail", "quick-and-dirty") })
+                        .WithId(j.Id))
                     .ToList();
             }
 
